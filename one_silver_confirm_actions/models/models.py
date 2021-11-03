@@ -1,25 +1,43 @@
 # -*- coding: utf-8 -*-
 
-#
-#  @author : ibralsmn [bralsmn@gmail.com]
-#  @filename : nagm-fady-new / models.py
-#  @date : 9/23/21, 9:50 AM
-#  Copyright (c) 2021. All rights reserved.
-#
-
-# from odoo import models, fields, api
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
-# class one_silver_confirm_actions(models.Model):
-#     _name = 'one_silver_confirm_actions.one_silver_confirm_actions'
-#     _description = 'one_silver_confirm_actions.one_silver_confirm_actions'
+class SaleOrderInheritConfirm(models.Model):
+    _inherit = "sale.order"
 
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+    def confirm_order_server_action(self):
+        for rec in self:
+            if rec.state in ['draft', 'sent']:
+                rec.action_confirm()
+
+    def create_order_server_action(self):
+        for rec in self:
+            delivered = True
+            for line in rec.order_line:
+                if line.product_uom_qty != line.qty_delivered:
+                    delivered = False
+            if delivered:
+                rec._create_invoices()
+            else:
+                raise UserError(_('The Sale Order is Not Delivered.'))
+
+class PurchaseOrderInheritConfirm(models.Model):
+    _inherit = "purchase.order"
+
+    def confirm_purchase_order_server_action(self):
+        for rec in self:
+            if rec.state in ['draft', 'sent']:
+                rec.button_confirm()
+
+    def create_order_server_action(self):
+        for rec in self:
+            delivered = True
+            for line in rec.order_line:
+                if line.product_qty != line.qty_received:
+                    delivered = False
+            if delivered:
+                rec.action_create_invoice()
+            else:
+                raise UserError(_('The Purchase Order is Not Delivered.'))

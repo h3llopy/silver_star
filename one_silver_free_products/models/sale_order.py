@@ -232,7 +232,7 @@ class SaleOrder(models.Model):
                     [('customer_id', '=', self.partner_id.id), ('free_type_id.type_type', '=', 'standalone'),
                      ('free_type_id.not_percent', '=', True)]).free_type_id.ids
                 global_frees = self.env['one.free.type'].search(
-                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids)]).ids
+                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids),('type_type', '=', 'standalone')]).ids
                 for x in customer_frees:
                     frees_ids.append(x)
                 for y in global_frees:
@@ -242,7 +242,7 @@ class SaleOrder(models.Model):
                 customer_frees = self.env['one.free.type.customer'].search(
                     [('customer_id', '=', self.partner_id.id), ('free_type_id.type_type', '=', 'embedded')]).free_type_id.ids
                 global_frees = self.env['one.free.type'].search(
-                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids)]).ids
+                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids),('type_type', '=', 'embedded')]).ids
                 for x in customer_frees:
                     frees_ids.append(x)
                 for y in global_frees:
@@ -253,7 +253,8 @@ class SaleOrder(models.Model):
                     [('customer_id', '=', self.partner_id.id), ('free_type_id.type_type', '=', 'standalone'),
                      ('free_type_id.not_percent', '=', False)]).free_type_id.ids
                 global_frees = self.env['one.free.type'].search(
-                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids)]).ids
+                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids), ('type_type', '=', 'standalone'),
+                     ('not_percent', '=', False)]).ids
                 for x in customer_frees:
                     frees_ids.append(x)
                 for y in global_frees:

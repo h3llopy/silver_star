@@ -113,8 +113,6 @@
                            attrs="{'invisible':[('user_limit_method','=','amount')], 'readonly':True}"/>
                     <field name="pricelist_id"  optional="hide"/>
                     <field name="create_by"  optional="show"/>
-                    <field name="price_method" required="1"
-                           attrs="{'readonly':[('state','not in',['new','nedd_approve'])]}"/>
                     <field name="new_percent"
                            attrs="{'readonly':['|',('user_limit_method','=', 'amount'),('state','not in',['new']),'|',('user_limit_type','=','product_id')]}"/>
                     <field name="new_amount"

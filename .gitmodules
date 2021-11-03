@@ -1,0 +1,4 @@
+[submodule "onesolutionc/silver_star_addons"]
+	path = onesolutionc/silver_star_addons
+	url = git@github.com:onesolutionc/silver_star_addons.git
+	branch = main

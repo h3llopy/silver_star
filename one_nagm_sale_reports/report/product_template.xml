@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="product_template_id">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <div class="row">
+                    <div class="text-left">
+                        <strong class="text-left">
+                            <h3 t-esc="user.name"/>
+                        </strong>
+                        <strong class="text-left">
+                            <h6 t-esc="time.strftime('%a %d %b %Y')"/>
+                        </strong>
+                        <strong class="text-left">
+                            <h6 t-esc="time.strftime('%I:%M %p')"/>
+                        </strong>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th class="text-left">Barcode</th>
+                            <th class="text-left">Weight</th>
+                            <th class="text-left">Image</th>
+                            <th class="text-left">Details</th>
+                            <th class="text-left">Name</th>
+                            <th class="text-left">Sale Price</th>
+                            <th class="text-left">Price</th>
+                            <th class="text-left">Vendor Product Code</th>
+                            <th class="text-left">Internal Ref</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="docs" t-as="o">
+                            <t t-set="en" t-value="o.with_context(lang='en_US')"/>
+                            <t t-set="ar" t-value="o.with_context(lang='ar_001')"/>
+                            <td class="text-left"><t t-esc="o.barcode"/></td>
+                            <td class="text-left"><t t-esc="o.weight"/></td>
+                            <td name="td_name" class="text-left" style="width:5%;high:5%;">
+                                <t t-if="o.image_128">
+                                    <img style="width:40px; height:40px" t-attf-src="data:image/*;base64,{{o.image_128}}"/>
+                                </t>
+                            </td>
+                            <td class="text-left"><t t-esc="o.description"/></td>
+                            <td class="text-left">
+                                <t t-esc="en.name"/><br/>
+                                <t t-esc="ar.name"/>
+                            </td>
+                            <td class="text-left"><t t-esc="o.list_price"/></td>
+                            <td class="text-left"><t t-esc="o.get_vendor_product_price()"/></td>
+                            <td class="text-left"><t t-esc="o.get_vendor_product_code()"/></td>
+                            <td class="text-left"><t t-esc="o.default_code"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="product_template">
+        <t t-call="web.html_container">
+            <t t-call="one_nagm_sale_reports.product_template_id"/>
+        </t>
+    </template>
+    <template id="product_variants_template">
+        <t t-call="web.html_container">
+            <t t-call="one_nagm_sale_reports.product_template_id"/>
+        </t>
+    </template>
+
+</odoo>

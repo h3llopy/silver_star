@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_saleorder_document" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//th[@name='th_description']" position="before">
+            <th name="th_description" class="text-left"/>
+        </xpath>
+        <xpath expr="//td[@name='td_name']" position="before">
+            <td name="td_name" class="text-left" style="width:5%;high:5%;">
+                <img style="width:20px; height:30px" t-attf-src="data:image/*;base64,{{line.product_id.image_128}}"/>
+            </td>
+        </xpath>
+    </template>
+</odoo>

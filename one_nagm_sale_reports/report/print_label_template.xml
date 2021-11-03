@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_simple_label_dymo" inherit_id="product.report_simple_label_dymo">
+        <xpath expr="//div[@class='o_label_left_column']/small" position="before">
+            <img style="width:20px; height:30px" t-attf-src="data:image/*;base64,{{product.image_128}}"/>
+        </xpath>
+    </template>
+    <template id="report_simple_label2x7" inherit_id="product.report_simple_label2x7">
+        <xpath expr="//span[@class='text-nowrap']" position="before">
+            <img style="width:20px; height:30px" t-attf-src="data:image/*;base64,{{product.image_128}}"/>
+        </xpath>
+    </template>
+    <template id="report_simple_label4x7" inherit_id="product.report_simple_label4x7">
+        <xpath expr="//span[@class='text-nowrap']" position="before">
+            <img style="width:20px; height:30px" t-attf-src="data:image/*;base64,{{product.image_128}}"/>
+        </xpath>
+    </template>
+    <template id="report_simple_label4x12" inherit_id="product.report_simple_label4x12">
+        <xpath expr="//div[@class='o_label_full o_label_small_text']/t[1]/div[1]" position="before">
+            <img style="width:20px; height:30px" t-attf-src="data:image/*;base64,{{product.image_128}}"/>
+        </xpath>
+        <xpath expr="//div[@class='o_label_full o_label_small_text']/t[2]/div" position="before">
+            <img style="width:20px; height:30px" t-attf-src="data:image/*;base64,{{product.image_128}}"/>
+        </xpath>
+    </template>
+</odoo>

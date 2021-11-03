@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<record model="ir.module.category" id="module_category_expiry">
+        <field name="name">expiry group</field>
+        <field name="description">Category For expiry</field>
+        <field name="sequence">45</field>
+    </record>
+
+    <record id="group_expiry_warning" model="res.groups">
+        <field name="name">Warning</field>
+        <field name="category_id" ref="module_category_expiry"/>
+         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+
+    </record>
+
+    <record id="group_expiry_validation" model="res.groups">
+        <field name="name">Bloked Warning</field>
+        <field name="category_id" ref="module_category_expiry"/>
+         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+
+    </record>
+
+</odoo>

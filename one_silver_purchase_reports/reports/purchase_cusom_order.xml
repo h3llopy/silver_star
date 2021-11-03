@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="one_silver_purchase_reports.paperformat_report_purchase_custom_order" model="report.paperformat">
+            <field name="name">Purchase IC Order Portrait</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+
+        </record>
+
+
+        <record id="one_silver_purchase_reports.report_purchase_custom_order" model="ir.actions.report">
+            <field name="name">Purchase  IC Order</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">one_silver_purchase_reports.report_purchase_order_report</field>
+            <field name="report_file">one_silver_purchase_reports.report_purchase_order_report</field>
+            <field name="binding_model_id" ref="model_purchase_order"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="one_silver_purchase_reports.paperformat_report_purchase_custom_order"/>
+
+        </record>
+
+        <template id="one_silver_purchase_reports.report_purchase_order_document">
+            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+            <div class="row  mx-1">
+                <div class="col-12">
+                    <div class="row  mb-2 d-block text-center h1  border border-dark" >
+                        <span>Purchase Order</span>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6  border border-dark">
+                            <div class="row">
+                                <div class="col-4">Date</div>
+                                <div class="col-8">
+                                    <span t-field="o.date_approve"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">PO Number</div>
+                                <div class="col-8">
+                                    <span t-field="o.one_sequence"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">Customer ID</div>
+                                <div class="col-8">
+                                    <span t-field="o.partner_id.ref"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row  mb-2">
+                        <div class="col-6  ">
+                            <div class="row  d-block border border-dark  text-center">Vendor</div>
+                            <div class="row   d-block border border-dark  text-center">
+                                <div t-field="o.partner_id"
+                                     t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                            </div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="row  d-block border border-dark  text-center ">Shipped To</div>
+                            <div class="row  d-block border border-dark  text-center">
+                                <div t-field="o.partner_id"
+                                     t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row  mb-2">
+                        <div class="col-2  border border-dark  ">
+                            <div class="row  d-block border border-dark text-center">Ship Via</div>
+                            <div class="row d-block  text-center"><span t-field="o.shipping_via.name"/></div>
+                        </div>
+                        <div class="col-2  border border-dark ">
+                            <div class="row d-block border border-dark text-center">Shipping Method</div>
+                            <div class="row d-block text-center"><span t-field="o.incoterm_id.name"/></div>
+                        </div>
+                        <div class="col-6  border border-dark">
+                            <div class="row  d-block border border-dark text-center">Shipping terms</div>
+                            <div class="row d-block text-center"><span t-field="o.notes"/></div>
+                        </div>
+                        <div class="col-2  border border-dark">
+                            <div class="row d-block border border-dark  text-center">Request Deliver Date</div>
+                            <div class="row d-block text-center">
+                                <span t-esc="context_timestamp(o.date_planned).strftime('%Y-%m-%d')"/>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page">
+                <table class="table table-bordered table-sm o_main_table text-center border border-dark">
+                    <thead>
+                        <tr>
+                            <th name="th_internal" class="text-center">
+                                <span>Code</span>
+                            </th>
+                            <th name="th_description" class="text-center">
+                                <span>Description</span>
+                            </th>
+                            <th name="th_uom" class="text-center">
+                                <span>Unit</span>
+                            </th>
+                            <th name="th_quantity" class="text-center">
+                                <span>Qty</span>
+                            </th>
+                            <th name="th_price_unit" class="text-center">
+                                <span>Unit Price</span>
+                            </th>
+                            <th name="th_amount" class="text-center">
+                                <span>Amount</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="o.order_line" t-as="line">
+                            <td class="text-right">
+                                <span t-field="line.product_id.default_code"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.product_id.name"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.product_uom.name" groups="uom.group_uom"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.product_qty"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.price_unit"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.price_subtotal"
+                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+
+        </template>
+
+        <template id="one_silver_purchase_reports.report_purchase_order_report">
+            <t t-call="web.basic_layout">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="one_silver_purchase_reports.report_purchase_order_document" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>
+

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="one_silver_custom_product.report_product_label" model="ir.actions.report">
+            <field name="name">Product Label (PDF)</field>
+            <field name="model">product.customerinfo</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">one_silver_custom_product.report_productlabel</field>
+            <field name="report_file">pone_silver_custom_product.report_productlabel</field>
+            <field name="print_report_name">'Products Labels - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="one_silver_custom_product.model_product_customerinfo"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="one_silver_custom_product.report_product_template_barcode" model="ir.actions.report">
+            <field name="name">Product Barcode (PDF)</field>
+            <field name="model">product.customerinfo</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">one_silver_custom_product.report_producttemplatebarcode</field>
+            <field name="report_file">one_silver_custom_product.report_producttemplatebarcode</field>
+            <field name="print_report_name">'Products barcode - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="one_silver_custom_product.model_product_customerinfo"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+</odoo>

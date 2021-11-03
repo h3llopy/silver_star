@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ # One Solution 
+  ~ # 
+  ~ # @author :ibralsmn.
+  ~ # @mailto : ibralsmn@onesolutionc.com.
+  ~ # @company : onesolutionc.com.
+  ~ # @project : international_center.
+  ~ # @module:  addons.
+  ~ # @file : landed_cost.xml.
+  ~ # @created : 10/9/21, 1:22 PM.
+  ~
+  -->
+
+<odoo>
+    <data>
+
+        <record id='one_silver_purchase.view_stock_landed_cost_form_inherit' model='ir.ui.view'>
+            <field name="name">one.silver.purchase.view.stock.landed.cost.form.inherit</field>
+            <field name="model">stock.landed.cost</field>
+            <field name="inherit_id" ref="stock_landed_costs.view_stock_landed_cost_form"/>
+            <field name="arch" type="xml">
+
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" type="object" name="get_related_purchase_orders"
+                            icon="fa-bars" string="Purchase Order">
+<!--                        <field name="landed_cost_count"/>-->
+                    </button>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

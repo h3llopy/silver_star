@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~
+  ~ @author : ibralsmn [bralsmn@gmail.com]
+  ~ @filename : nagm-fady-new / res_partner.xml
+  ~ @date : 9/23/21, 9:50 AM
+  ~ Copyright (c) 2021. All rights reserved.
+  ~
+  -->
+
+<odoo>
+    <record id="one_silver_free_products.res_partner_inherit" model="ir.ui.view">
+        <field name="name">one.free.product.res.partner.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr='//group[2]' position='after'>
+                <group>
+                    <group>
+                        <field name="allow_free_product" widget="boolean_toggle"/>
+                    </group>
+                </group>
+                <group>
+                    <field name="free_types_allowed" attrs="{'invisible':[('allow_free_product','!=', True)]}" context="{'default_customer_id':active_id,}" >
+                        <tree editable="bottom">
+                            <field name="customer_id" invisible="1"/>
+                            <field name="free_type_id" required="1" />
+                            <field name="free_amount" required="1"/>
+                            <field name="free_percent" required="1"/>
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

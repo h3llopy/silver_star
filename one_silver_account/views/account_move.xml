@@ -1,0 +1,28 @@
+
+<!--
+  ~
+  ~ @author : ibralsmn [bralsmn@gmail.com]
+  ~ @filename : nagm-fady-new / account_move.xml
+  ~ @date : 9/23/21, 9:50 AM
+  ~ Copyright (c) 2021. All rights reserved.
+  ~
+  -->
+
+<odoo>
+
+    <!-- Inherit Form View to Modify it -->
+    <record id="one_account_move_inherit_sale_order_partner" model="ir.ui.view">
+        <field name="name">one.account.move.inherit.sale.order.partner</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//tree/field[@name='quantity']" position="before">
+                <field name="sales_order_id"/>
+                <field name="partner_shipping_id"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

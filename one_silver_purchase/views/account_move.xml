@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ # One Solution
+  ~ #
+  ~ # @author :ibralsmn.
+  ~ # @mailto : ibralsmn@onesolutionc.com.
+  ~ # @company : onesolutionc.com.
+  ~ # @project : international_center.
+  ~ # @module:  addons.
+  ~ # @file : account_move.xml.
+  ~ # @created : 10/9/21, 4:36 PM.
+  ~
+  -->
+
+<odoo>
+    <data>
+
+        <record id="one_silver_purchase.view_move_form_inherit_purchase" model="ir.ui.view">
+            <field name="name">one.silver.purchase.view.move.form.inherit.purchase</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='ref']" position="after">
+                    <field name="vendor_ref_date"/>
+                    <field name="is_have_land_costs" force_save="1" invisible="1"/>
+                </xpath>
+                <xpath expr="//page[@name='other_info']" position="after">
+                    <page name="land_cost_pos" string="Purchase Orders" attrs="{'readonly':[('state','=','posted')]}">
+                        <field name="land_cost_purchase_order_ids" options="{'no_create': True}"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

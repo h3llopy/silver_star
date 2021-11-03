@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~
+  ~ @author : ibralsmn [bralsmn@gmail.com]
+  ~ @filename : nagm-fady-new / pricelist.xml
+  ~ @date : 9/23/21, 9:50 AM
+  ~ Copyright (c) 2021. All rights reserved.
+  ~
+  -->
+
+<odoo>
+    <data>
+
+        <record id="one_silver_employee_price_limit.pricelist_tree_view" model="ir.ui.view">
+            <field name="name">product.pricelist.tree.inherit.product</field>
+            <field name="model">product.pricelist</field>
+            <field name="inherit_id" ref="product.product_pricelist_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='pricelist_config']" position="after">
+                    <page name="employee_limits" string="Employees">
+                        <field name="employee_ids">
+                            <tree editable="bottom">
+                                <field name="user_id"/>
+                                <field name="increase_percent"/>
+                                <field name="increase_amount"/>
+                                <field name="decrease_percent"/>
+                                <field name="decrease_amount"/>
+                                <field name="active" widget="boolean_toggle"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="one_silver_employee_price_limit.pricelist_item_tree_view" model="ir.ui.view">
+            <field name="name">product.pricelist.item.tree.inherit.product</field>
+            <field name="model">product.pricelist</field>
+            <field name="inherit_id" ref="product.product_pricelist_view_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/notebook/page/field[@name='item_ids']/tree/field[@name='price']"
+                       position="after">
+                    <field name="price_min"/>
+
+                </xpath>
+            </field>
+        </record>
+        <record id="one_silver_employee_price_limit.pricelist_item_form_view" model="ir.ui.view">
+            <field name="name">product.pricelist.item.form.inherit.product</field>
+            <field name="model">product.pricelist.item</field>
+            <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='pricelist_rule_computation']" position="after">
+                    <group>
+                        <group></group>
+                        <group>
+                            <field name="price_unit_min"/>
+                        </group>
+                    </group>
+
+
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

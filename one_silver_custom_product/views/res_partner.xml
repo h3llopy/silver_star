@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~
+  ~ @author : ibralsmn [bralsmn@gmail.com]
+  ~ @filename : nagm-fady-new / res_partner.xml
+  ~ @date : 9/23/21, 9:50 AM
+  ~ Copyright (c) 2021. All rights reserved.
+  ~
+  -->
+
+<odoo>
+    <record id="one_silver_custom_product.res_partner_inherit" model="ir.ui.view">
+        <field name="name">one.silver.custom.product.res.partner.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form//sheet" position="before">
+                <header>
+                    <button name="action_add_customers_wizard" string="Add Product" class="oe_highlight" type="object"
+                            attrs="{'invisible':[('allow_custom_product','=', False)]}" context="{'default_partner_id':active_id}"/>
+                </header>
+            </xpath>
+            <xpath expr='//field[@name="vat"]' position='after'>
+                <field name="allow_custom_product"/>
+            </xpath>
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" type="object" name="get_customer_custom_products"
+                        attrs="{'invisible': [('allow_custom_product', '=', False)]}"
+                        icon="fa-usd">
+                    <field string="Products" name="products_count" widget="statinfo"/>
+                </button>
+            </div>
+
+        </field>
+    </record>
+    <record id="one_silver_custom_product.add_products_to_customer" model="ir.ui.view">
+        <field name="name">one.custom.product.partner.wizard.form.view</field>
+        <field name="model">one.custom.product.partner.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="product_ids" options="{'no_create': True}" context="{'edit': False, 'delete': False}"/>
+                <footer>
+                    <button name="add_custom_products" string="Save Products" type="object" class="oe_highlight o_generate"/>
+                    <button special="cancel" string="Cancel" type="object" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

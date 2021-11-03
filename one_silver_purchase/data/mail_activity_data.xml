@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+
+    <data>
+        <record id="po_deadline_date" model="mail.activity.type">
+            <field name="name">Deadline Reminder</field>
+            <field name="icon">fa-line-chart</field>
+            <field name="res_model">purchase.order</field>
+        </record>
+        <record id="po_receipt_date" model="mail.activity.type">
+            <field name="name">Receipt Reminder</field>
+            <field name="icon">fa-line-chart</field>
+            <field name="res_model">purchase.order</field>
+        </record>
+        <record id="po_shipping_date" model="mail.activity.type">
+            <field name="name">Shipping Reminder</field>
+            <field name="icon">fa-line-chart</field>
+            <field name="res_model" >purchase.order</field>
+        </record>
+        <record id="po_inside_port_date" model="mail.activity.type">
+            <field name="name">Inside Port Reminder</field>
+            <field name="icon">fa-line-chart</field>
+            <field name="res_model" >purchase.order</field>
+        </record>
+        <record id="po_outside_port_date" model="mail.activity.type">
+            <field name="name">Outside Port Reminder</field>
+            <field name="icon">fa-line-chart</field>
+            <field name="res_model" >purchase.order</field>
+        </record>
+        <record id="invoice_without_landed_cost" model="mail.activity.type">
+            <field name="name">No Landed Cost</field>
+            <field name="icon">fa-line-chart</field>
+            <field name="res_model">account.move</field>
+        </record>
+    </data>
+</odoo>

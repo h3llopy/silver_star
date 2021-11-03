@@ -1,0 +1,70 @@
+
+<!--
+  ~
+  ~ @author : ibralsmn [bralsmn@gmail.com]
+  ~ @filename : nagm-fady-new / views.xml
+  ~ @date : 9/23/21, 9:50 AM
+  ~ Copyright (c) 2021. All rights reserved.
+  ~
+  -->
+
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <!--
+            <record model="ir.ui.view" id="one_silver_domain_address.list">
+              <field name="name">one_silver_domain_address list</field>
+              <field name="model">one_silver_domain_address.one_silver_domain_address</field>
+              <field name="arch" type="xml">
+                <tree>
+                  <field name="name"/>
+                  <field name="value"/>
+                  <field name="value2"/>
+                </tree>
+              </field>
+            </record>
+        -->
+
+        <!-- actions opening views on models -->
+        <!--
+            <record model="ir.actions.act_window" id="one_silver_domain_address.action_window">
+              <field name="name">one_silver_domain_address window</field>
+              <field name="res_model">one_silver_domain_address.one_silver_domain_address</field>
+              <field name="view_mode">tree,form</field>
+            </record>
+        -->
+
+        <!-- server action to the one above -->
+        <!--
+            <record model="ir.actions.server" id="one_silver_domain_address.action_server">
+              <field name="name">one_silver_domain_address server</field>
+              <field name="model_id" ref="model_one_silver_domain_address_one_silver_domain_address"/>
+              <field name="state">code</field>
+              <field name="code">
+                action = {
+                  "type": "ir.actions.act_window",
+                  "view_mode": "tree,form",
+                  "res_model": model._name,
+                }
+              </field>
+            </record>
+        -->
+
+        <!-- Top menu item -->
+        <!--
+            <menuitem name="one_silver_domain_address" id="one_silver_domain_address.menu_root"/>
+        -->
+        <!-- menu categories -->
+        <!--
+            <menuitem name="Menu 1" id="one_silver_domain_address.menu_1" parent="one_silver_domain_address.menu_root"/>
+            <menuitem name="Menu 2" id="one_silver_domain_address.menu_2" parent="one_silver_domain_address.menu_root"/>
+        -->
+        <!-- actions -->
+        <!--
+            <menuitem name="List" id="one_silver_domain_address.menu_1_list" parent="one_silver_domain_address.menu_1"
+                      action="one_silver_domain_address.action_window"/>
+            <menuitem name="Server to list" id="one_silver_domain_address" parent="one_silver_domain_address.menu_2"
+                      action="one_silver_domain_address.action_server"/>
+        -->
+    </data>
+</odoo>

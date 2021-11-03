@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="one_silver_customer_target.sale_order_form_view_inherit" model="ir.ui.view">
+        <field name="name">one.silver.customer.sale.order.form.view.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="replace">
+                <field name="user_id" />
+            </xpath>
+            <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='product_uom_qty']"
+                   position="before">
+                <field name="remian_target_qty" force_save="1"/>
+            </xpath>
+
+            <xpath expr="//header" position="after">
+                <field name="partner_have_target" invisible="1"/>
+                <div class="alert alert-info text-center" attrs="{'invisible': ['|',('partner_have_target', '=', True), ('partner_id', '=', False)]}" role="alert">
+                    Selected Customer Not Have Target
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ /**
+  ~  * @author :ibralsmn
+  ~  * @mailto : ibralsmn@onesolutionc.com
+  ~  * @company : onesolutionc.com
+  ~  * @project : international_center
+  ~  * @module:  addons
+  ~  * @file : sale_order.xml
+  ~  * @created : 9/30/21, 3:25 PM
+  ~
+  ~ **/
+  -->
+
+<!--
+  ~ /**
+  ~  * @author : ${USER}
+  ~  * @mailto : ibralsmn@onesolutionc.com
+  ~  * @company : onesolutionc.com
+  ~  * @project : ${PROJECT_NAME}
+  ~  * @created : ${DATE}, ${DAY_NAME_FULL}
+  ~  * @package : ${PACKAGE_NAME}
+  ~ **/
+  -->
+
+<odoo>
+    <data>
+
+
+        <record id="one_silver_sequence_limit.sale_order_form_view_inherit" model="ir.ui.view">
+            <field name="name">one.silver.sequence.limit.sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="one_silver_employee_price_limit.sale_order_form_view_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form//header//button[@name='action_draft']" position="after">
+                    <button name="next_sales_order_action" id="next_sales_order_action"
+                            string="confirm next" class="btn-primary" type="object"
+                            attrs="{'invisible': ['|',('state', 'not in', ['draft','approve']),('can_confirm','=',False)]}"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

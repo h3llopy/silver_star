@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+        <template id="report_sale" inherit_id="sale.report_saleorder_document">
+            <xpath expr="//div[@name='expiration_date']" position="after">
+                 <div t-if="doc.count_line_so and doc.state in ['draft', 'sent']" class="col-auto col-3 mw-100 mb-2" name="expiration_date">
+                    <strong>Number of Products:</strong>
+                    <p class="m-0" t-field="doc.count_line_so"/>
+                </div>
+            </xpath>
+        </template>
+
+
+</odoo>

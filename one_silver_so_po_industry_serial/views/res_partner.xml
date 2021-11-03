@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ /**
+  ~  * @author : ${USER}
+  ~  * @mailto : ibralsmn@onesolutionc.com
+  ~  * @company : onesolutionc.com
+  ~  * @project : ${PROJECT_NAME}
+  ~  * @created : ${DATE}, ${DAY_NAME_FULL}
+  ~  * @package : ${PACKAGE_NAME}
+  ~ **/
+  -->
+
+<odoo>
+    <data>
+        <record id="one_silver_so_po_industry_serial.partner_form_view_inherit" model="ir.ui.view">
+            <field name="name">one.silver.so.po.industry.serial.res.partner.form.view.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='industry_id']" position="after">
+                    <field name="partner_code" string="Sequence Code"/>
+                    <field name="categ_id"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="one_silver_so_po_industry_serial.partner_category_form_view" model="ir.ui.view">
+            <field name="name">one.silver.industry.serial.partner.category.form.view</field>
+            <field name="model">one.partner.category</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <div name="button_box" class="oe_button_box">
+                            <button class="oe_stat_button" type="object"
+                                    name="get_customers"
+                                    icon="fa-usd">
+                                <field string="Customer" name="customers_count" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="code"/>
+                            </group>
+                            <field name="description"/>
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <!--        <record id="one_silver_so_po_industry_serial.res_partner_category_tree_view" model="ir.ui.view">-->
+        <!--            <field name="name">one.silver.industry.serial.res.partner.category.tree.view</field>-->
+        <!--            <field name="model">one.partner.category</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <tree>-->
+        <!--                    <field name="name"/>-->
+        <!--                    <field name="code"/>-->
+        <!--                    <field name="description"/>-->
+        <!--                </tree>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+        <record id="one_silver_so_po_industry_serial.res_partner_category_action_view" model="ir.actions.act_window">
+            <field name="name">Partner Category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">one.partner.category</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="one_silver_so_po_industry_serial.res_partner_category_menuitem" name="Partner Category"
+                  parent="contacts.res_partner_menu_config"
+                  action="one_silver_so_po_industry_serial.res_partner_category_action_view"
+                  sequence="10"/>
+
+
+    </data>
+</odoo>

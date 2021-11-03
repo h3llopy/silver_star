@@ -1,0 +1,52 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+
+        <record model="ir.ui.view" id="one_silver_customer_inventory.customer_inventory_list_view">
+            <field name="name">one.silver.customer.inventory.customer.inventory.list.view</field>
+            <field name="model">one.customer.inventory</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" duplicate="false" delete="false" >
+                    <field name="id" invisible="1"/>
+                    <field name="move_date" attrs="{'readonly': [('id','!=',False)]}" force_save="1"/>
+                    <field name="move_type" readonly="1"  force_save="1"/>
+                    <field name="company_id" invisible="1"  force_save="1"/>
+                    <field name="customer_id"  attrs="{'readonly': [('id','!=',False)]}"  force_save="1"/>
+                    <field name="product_tmpl_id"  force_save="1"/>
+                    <field name="product_id"  attrs="{'readonly': [('id','!=',False)]}"  force_save="1"/>
+                    <field name="lot_id"  attrs="{'readonly': [('id','!=',False)]}"  force_save="1"/>
+                    <field name="product_uom_id"  attrs="{'readonly': [('id','!=',False)]}"  force_save="1"/>
+                    <field name="product_uom_category_id" invisible="1"  force_save="1"/>
+                    <field name="stock_move_id" readonly="1"  force_save="1"/>
+                    <field name="inv_qty"  attrs="{'readonly': [('id','!=',False)]}"  force_save="1"/>
+                    <field name="balance" readonly="1"  force_save="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="one_silver_customer_inventory.customer_inventory_filter_view" model="ir.ui.view">
+            <field name="name">one.customer.inventory.select</field>
+            <field name="model">one.customer.inventory</field>
+            <field name="arch" type="xml">
+                <search string="Search Move">
+                    <group expand="0" string="Group By">
+                        <field name="customer_id" domain="[]" context="{'group_by': 'customer_id'}"/>
+<!--                        <field name="product_id"  domain="[]" context="{'group_by': 'product_id'}"/>-->
+                        <field name="product_tmpl_id"  domain="[]" context="{'group_by': 'product_tmpl_id'}"/>
+                   </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="one_silver_customer_inventory.customer_inventory_action_window">
+            <field name="name">Customer Inventory</field>
+            <field name="res_model">one.customer.inventory</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="context">{'search_default_customer_id': 1,'search_default_product_tmpl_id': 1, 'default_move_type':'reading'}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem name="Customer Inventory" id="one_silver_customer_inventory.customer_inventory_menuitem" parent="sale.menu_sale_report"
+                  action="one_silver_customer_inventory.customer_inventory_action_window"/>
+
+    </data>
+</odoo>

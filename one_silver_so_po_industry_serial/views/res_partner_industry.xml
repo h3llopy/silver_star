@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ /**
+  ~  * @author : ${USER}
+  ~  * @mailto : ibralsmn@onesolutionc.com
+  ~  * @company : onesolutionc.com
+  ~  * @project : ${PROJECT_NAME}
+  ~  * @created : ${DATE}, ${DAY_NAME_FULL}
+  ~  * @package : ${PACKAGE_NAME}
+  ~ **/
+  -->
+
+<odoo>
+    <data>
+        <record id="one_silver_so_po_industry_serial.industry_tree_view_inherit" model="ir.ui.view">
+            <field name="name">one.silver.so.po.industry.serial.industry.tree.view.inherit</field>
+            <field name="model">res.partner.industry</field>
+            <field name="inherit_id" ref="base.res_partner_industry_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="replace">
+                    <tree string="Industry" editable="bottom">
+                        <field name="parent_id"/>
+                        <field name="name"/>
+                        <field name="code"/>
+                    </tree>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

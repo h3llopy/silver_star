@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ /**
+  ~  * @author : ${USER}
+  ~  * @mailto : ibralsmn@onesolutionc.com
+  ~  * @company : onesolutionc.com
+  ~  * @project : ${PROJECT_NAME}
+  ~  * @created : ${DATE}, ${DAY_NAME_FULL}
+  ~  * @package : ${PACKAGE_NAME}
+  ~ **/
+  -->
+
+<odoo>
+    <data>
+        <record id="one_silver_so_po_industry_serial.one_sequence_form_view" model="ir.ui.view">
+            <field name="name">one.silver.so.po.industry.serial.one.sequence.form.view</field>
+            <field name="model">one.sequence</field>
+            <field name="arch" type="xml">
+                <form>
+
+                    <header>
+                        <button name="run_one_sequence" string="RUN" class="oe_highlight" states="draft" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,running"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" attrs="{'readonly':[('state','=','running')]}"/>
+                                <field name="used_for" attrs="{'readonly':[('state','=','running')]}"/>
+                                <field name="stock_picking_code"
+                                       attrs="{'required':[('used_for','=','stock_picking')],'invisible':[('used_for','!=','stock_picking')],'readonly':[('state','=','running')]}"/>
+                            </group>
+                            <group>
+                                <field name="code" attrs="{'readonly':[('state','=','running')]}"/>
+                                <field name="use_level" attrs="{'readonly':[('state','=','running')]}"/>
+                                <field name="stock_picking_type_id" domain="[('code','=',stock_picking_code)]"
+                                       attrs="{'invisible':['|',('used_for','!=','stock_picking'),('stock_picking_code','not in',['incoming','outgoing'])],'readonly':[('state','=','running')]}"/>
+                                <field name="partner_id"
+                                       attrs="{'invisible':[('use_level','!=','partner')], 'required':[('use_level','=','partner')],'readonly':[('state','=','running')]}"/>
+                                <field name="industry_id"
+                                       attrs="{'invisible':[('use_level','!=','industry')],'required':[('use_level','=','industry')],'readonly':[('state','=','running')]}"/>
+                                <field name="category_id"
+                                       attrs="{'invisible':[('use_level','!=','category')],'required':[('use_level','=','category')],'readonly':[('state','=','running')]}"/>
+                                <field name="company_id" attrs="{'readonly':[('state','=','running')]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="prefix" force_save="1"/>
+                                <field name="padding" attrs="{'readonly':[('state','=','running')]}"/>
+                                <field name="per_year" attrs="{'readonly':[('state','=','running')]}"/>
+                            </group>
+                            <group>
+                                <field name="number_increment" attrs="{'readonly':[('state','=','running')]}"/>
+                                <field name="number_next" force_save="1"/>
+                                <field name="number_current" force_save="1"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page name="years_ids" string="Years">
+                                <field name="years_ids" readonly="1">
+                                    <tree create="0" delete="0" multi_edit="0">
+                                        <field name="sequence_id"/>
+                                        <field name="year_from"/>
+                                        <field name="year_to"/>
+                                        <field name="current"/>
+                                        <field name="number_next"/>
+                                        <field name="number_current"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="one_silver_so_po_industry_serial.one_sequence_tree_view" model="ir.ui.view">
+            <field name="name">one.silver.so.po.industry.serial.one.sequence.tree.view</field>
+            <field name="model">one.sequence</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="used_for"/>
+                    <field name="use_level"/>
+                    <field name="prefix"/>
+                    <field name="number_next"/>
+                    <field name="number_current"/>
+                    <field name="number_increment"/>
+                    <field name="per_year"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="one_silver_so_po_industry_serial.one_sequence_action_view" model="ir.actions.act_window">
+            <field name="name">Sequence</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">one.sequence</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="one_silver_so_po_industry_serial.one_sequence_menuitem" name="Sequence"
+                  parent="contacts.res_partner_menu_config"
+                  action="one_silver_so_po_industry_serial.one_sequence_action_view"
+                  sequence="10"/>
+
+
+    </data>
+</odoo>

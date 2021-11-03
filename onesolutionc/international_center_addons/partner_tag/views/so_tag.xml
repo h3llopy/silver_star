@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+       <!-- Inherit Form View to Modify it -->
+       <record id="form_tag_so_inherit_id" model="ir.ui.view">
+           <field name="name">sale.order.inherit.tag</field>
+           <field name="model">sale.order</field>
+           <field name="inherit_id" ref="sale.view_order_form"/>
+           <field name="arch" type="xml">
+
+               <xpath expr="//field[@name='payment_term_id']" position="after">
+                   <field name="tag_so_ids" widget='many2many_tags' />
+               </xpath>
+
+           </field>
+       </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="one_silver_customer_target.crm_team_view_form" model="ir.ui.view">
+            <field name="name">one.silver.customer.target.crm.team.form</field>
+            <field name="model">crm.team</field>
+            <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='member_ids']" position="replace">
+                    <field name="member_ids" options="{'not_delete': True, 'no_create': True}" context="{'default_crm_team_id':active_id}">
+                        <tree editable="top">
+                            <field name="crm_team_id" invisible="1"/>
+                            <field name="user_id"/>
+                            <field name="user_target"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="user_company_ids" invisible="1"/>
+                            <field name="user_in_teams_ids" invisible="1"/>
+                        </tree>
+                    </field>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="manager_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

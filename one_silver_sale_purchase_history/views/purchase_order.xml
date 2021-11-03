@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+<odoo>
+    <record id="one_silver_sale_purchase_history.purchase_order_line_button_view" model="ir.ui.view">
+        <field name="name">one.sale.purchase.history.purchase.order.line.button.view</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/tree//field[@name='product_id']"
+                   position="before">
+                <button name="one_get_product_history_data" type="object" nolabel="1"
+                        icon="fa-history"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

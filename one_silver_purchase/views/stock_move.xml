@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="one_silver_purchase.view_stock_move_line_operation_tree_expiry" model="ir.ui.view">
+            <field name="name">one.silver.purchase.stock.move.line.inherit.tree</field>
+            <field name="model">stock.move.line</field>
+            <field name="inherit_id" ref="product_expiry.view_stock_move_line_operation_tree_expiry"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='expiration_date']" position="before" >
+                    <field name="production_exp_date"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

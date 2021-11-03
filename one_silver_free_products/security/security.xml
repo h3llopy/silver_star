@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~ @author : ibralsmn [bralsmn@gmail.com]
+  ~ @filename : nagm-fady-new / security.xml
+  ~ @date : 9/23/21, 9:50 AM
+  ~ Copyright (c) 2021. All rights reserved.
+  ~
+  -->
+
+<odoo>
+    <record model="ir.module.category" id="free_products_rights">
+        <field name="name">Free Products Rights</field>
+        <field name="sequence">140</field>
+    </record>
+    <record model="res.groups" id="create_free_sale_order">
+        <field name="name">Allow Create Free Sale Order</field>
+        <field name="category_id" ref="one_silver_free_products.free_products_rights"/>
+
+    </record>
+    <record model="res.groups" id="create_free_inner_sale_order">
+        <field name="name">Allow Create Free Inner Sale Order</field>
+        <field name="category_id" ref="one_silver_free_products.free_products_rights"/>
+
+    </record>
+
+</odoo>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="forward_sale_action_report" model="ir.actions.report">
+        <field name="name">Forward Sale</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">one_nagm_sale_reports.forward_sale_id</field>
+        <field name="report_file">one_nagm_sale_reports.forward_sale_id</field>
+        <field name="print_report_name">('Forward Sale - %s' %(object.name))</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+    <record id="sultan_sale_action_report" model="ir.actions.report">
+        <field name="name">Sultan Center</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">one_nagm_sale_reports.sultan_sale_report_id</field>
+        <field name="report_file">one_nagm_sale_reports.sultan_sale_report_id</field>
+        <field name="print_report_name">('Sultan Center - %s' %(object.name))</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="forward_sale_report" model="ir.actions.report">
+        <field name="name">Forward Sale</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">one_nagm_sale_reports.forward_sale_template_id</field>
+        <field name="report_file">one_nagm_sale_reports.forward_sale_template_id</field>
+        <field name="print_report_name">('Forward Sale - %s' %(object.name))</field>
+        <field name="binding_type">report</field>
+    </record>
+    <record id="sultan_sale_report" model="ir.actions.report">
+        <field name="name">Sultan Center</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">one_nagm_sale_reports.sultan_sale_template_id</field>
+        <field name="report_file">one_nagm_sale_reports.sultan_sale_template_id</field>
+        <field name="print_report_name">('Sultan Center - %s' %(object.name))</field>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

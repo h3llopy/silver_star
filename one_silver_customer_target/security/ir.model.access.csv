@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_one_silver_customer_target_one_customer_target,one.customer.target,model_one_customer_target,base.group_user,1,1,1,1
+access_one_silver_customer_target_one_customer_target_line,one.customer.target.line,model_one_customer_target_line,base.group_user,1,1,1,1
+access_one_silver_customer_target_one_customer_target_result,one.customer.target.result,model_one_customer_target_result,base.group_user,1,1,1,1
+access_one_silver_customer_target_crm_team_member,crm.team.member,model_crm_team_member,base.group_user,1,1,1,1

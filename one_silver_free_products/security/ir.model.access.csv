@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_one_silver_free_products_one_free_type,one.free.type,model_one_free_type,base.group_user,1,1,1,1
+access_one_silver_free_products_one_sale_order_free_product,one.sale.order.free.product,model_one_sale_order_free_product,base.group_user,1,1,1,1
+access_one_silver_free_products_one_sale_order_free_product_add_wizard,one.sale.order.free.product.add.wizard,model_one_sale_order_free_product_add_wizard,base.group_user,1,1,1,1
+access_one_silver_free_products_one_free_type_customer_new,one.free.type.customer,model_one_free_type_customer,base.group_user,1,1,1,1
+access_one_silver_free_products_one_free_type_customer_wizard,one.free.type.customer.wizard,model_one_free_type_customer_wizard,base.group_user,1,1,1,1
+
+
+

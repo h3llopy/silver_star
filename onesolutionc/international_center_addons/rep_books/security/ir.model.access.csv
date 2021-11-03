@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+reb_book,reb_book_name,model_rep_books,,1,1,1,1
+reb_book_lines,reb_book_lines_name,model_rep_books_line,,1,1,1,1

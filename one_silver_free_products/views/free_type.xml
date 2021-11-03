@@ -1,0 +1,122 @@
+<!--
+  ~
+  ~ @author : ibralsmn [bralsmn@gmail.com]
+  ~ @filename : nagm-fady-new / free_type.xml
+  ~ @date : 9/23/21, 9:50 AM
+  ~ Copyright (c) 2021. All rights reserved.
+  ~
+  -->
+
+<odoo>
+
+    <record id="one_silver_free_products.free_type_form_view_id" model="ir.ui.view">
+        <field name="name">one.free.type.form</field>
+        <field name="model">one.free.type</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                    <button name="action_add_customers_wizard" string="Add Customers" class="oe_highlight" type="object"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="get_customers"
+                                icon="fa-bar">
+                            <field string="Customers" name="customers_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="percentage"/>
+                            <field name="type_type"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                            <field name="amount"/>
+                            <field name="not_percent" attrs="{'invisible':[('type_type', '=', 'embedded')]}"/>
+                            <field name="color"/>
+                        </group>
+
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="one_silver_free_products.free_type_tree_view_id" model="ir.ui.view">
+        <field name="name">one.free.type.tree</field>
+        <field name="model">one.free.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" required="1"/>
+                <field name="type_type" required="1"/>
+                <field name="not_percent" attrs="{'invisible':[('type_type', '=', 'embedded')]}"/>
+                <field name="company_id"/>
+                <field name="percentage" required="1"/>
+                <field name="amount" required="1"/>
+                <field name="color"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="one_silver_free_products.one_free_type_customer_tree_view_id" model="ir.ui.view">
+        <field name="name">one.free.type.customer.tree</field>
+        <field name="model">one.free.type.customer</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="customer_id" readonly="1"/>
+                <field name="free_type_id" readonly="1"/>
+                <field name="free_amount"/>
+                <field name="free_percent"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="one_silver_free_products.one_free_type_customer_form_view" model="ir.ui.view">
+        <field name="name">one.free.type.customer.form</field>
+        <field name="model">one.free.type.customer</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="free_type_id"/>
+                        <field name="customer_id"/>
+                    </group>
+                    <group>
+                        <field name="free_amount"/>
+                        <field name="free_percent"/>
+
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="one_silver_free_products.free_type_action_view" model="ir.actions.act_window">
+        <field name="name">Free Types</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">one.free.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="one_silver_free_products.free_type_menu_id" name="Free Types" parent="sale.menu_sale_config"
+              action="one_silver_free_products.free_type_action_view"
+              sequence="200"/>
+
+    <record id="one_silver_free_products.add_customers_wizard" model="ir.ui.view">
+        <field name="name">one.free.type.customer.wizard.form.view</field>
+        <field name="model">one.free.type.customer.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="customers_ids" options="{'no_create':True}"/>
+                <footer>
+                    <button name="save_customers" string="Save Free" type="object" class="oe_highlight o_generate"/>
+                    <button special="cancel" string="Cancel" type="object" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+</odoo>

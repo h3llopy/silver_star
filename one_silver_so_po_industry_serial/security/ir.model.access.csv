@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_one_silver_so_po_industry_serial_one_partner_category,one.partner.category,model_one_partner_category,base.group_user,1,1,1,1
+access_one_silver_so_po_industry_serial_one_sequence,one.sequence,model_one_sequence,base.group_user,1,1,1,1
+access_one_silver_so_po_industry_serial_one_sequence_years,one.sequence.years,model_one_sequence_years,base.group_user,1,1,1,1

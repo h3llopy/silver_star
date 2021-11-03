@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+        <template id="report_account" inherit_id="account.report_invoice_document">
+            <xpath expr="//div[@name='invoice_date']" position="after">
+                <div class="col-auto col-3 mw-100 mb-2" t-if="o.count_line_am" name="count_line">
+                            <strong>Number of Products:</strong>
+                            <p class="m-0" t-field="o.count_line_am"/>
+                        </div>
+            </xpath>
+        </template>
+
+
+</odoo>

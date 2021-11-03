@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~
+  ~ @author : ibralsmn [bralsmn@gmail.com]
+  ~ @filename : nagm-fady-new / product.xml
+  ~ @date : 9/23/21, 9:50 AM
+  ~ Copyright (c) 2021. All rights reserved.
+  ~
+  -->
+
+<odoo>
+    <data>
+
+        <record id="product_customerinfo_form_view" model="ir.ui.view">
+            <field name="name">product.customerinfo.form.view</field>
+            <field name="model">product.customerinfo</field>
+            <field name="arch" type="xml">
+                <form string="Customer Information">
+                    <sheet>
+                        <group>
+                            <group name="customer" string="Customer">
+                                <field name="product_variant_count" invisible="1"/>
+                                <field name="name" context="{'res_partner_search_mode': 'customer'}"
+                                       domain="[('allow_custom_product','=',True)]"/>
+                                <field name="product_name"/>
+                                <field name="product_code"/>
+                                <label for="delay"/>
+                                <div>
+                                    <field name="delay" class="oe_inline"/>
+                                    days
+                                </div>
+                            </group>
+                            <group string="Pricelist">
+                                <field name="product_tmpl_id" string="Product"
+                                       invisible="context.get('visible_product_tmpl_id', True)"/>
+                                <field name="product_id" groups="product.group_product_variant"
+                                       domain="[('product_tmpl_id', '=', product_tmpl_id)]"
+                                       options="{'no_create_edit': True}"/>
+                                <label for="min_qty"/>
+                                <div class="o_row">
+                                    <field name="min_qty"/>
+                                    <field name="product_uom" groups="uom.group_uom"/>
+                                </div>
+                                <label for="price" string="Unit Price"/>
+                                <div class="o_row">
+                                    <field name="price"/>
+                                    <field name="currency_id" groups="base.group_multi_currency"/>
+                                </div>
+                                <label for="date_start" string="Validity"/>
+                                <div class="o_row">
+                                    <field name="date_start"/>
+                                    to
+                                    <field name="date_end"/>
+                                </div>
+                                <field name="company_id" options="{'no_create': True}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="product_customerinfo_search_view" model="ir.ui.view">
+            <field name="name">product.customerinfo.search.view</field>
+            <field name="model">product.customerinfo</field>
+            <field name="arch" type="xml">
+                <search string="Customer">
+                    <field name="name"/>
+                    <field name="product_tmpl_id"/>
+                    <filter string="Active" name="active"
+                            domain="[('date_end', '&gt;=',  (context_today() - datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))]"/>
+                    <filter string="Archived" name="archived"
+                            domain="[('date_end', '&lt;',  (context_today() - datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Product" name="groupby_product" domain="[]"
+                                context="{'group_by': 'product_tmpl_id'}"/>
+                        <filter string="Customer" name="groupby_customer" domain="[]" context="{'group_by': 'name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="product_customerinfo_view_kanban" model="ir.ui.view">
+            <field name="name">product.customerinfo.kanban</field>
+            <field name="model">product.customerinfo</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="min_qty"/>
+                    <field name="delay"/>
+                    <field name="price"/>
+                    <field name="name"/>
+                    <field name="currency_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="row mb4">
+                                    <strong class="col-6">
+                                        <span t-esc="record.name.value"/>
+                                    </strong>
+                                    <strong class="col-6 text-right">
+                                        <strong>
+                                            <field name="price" widget="monetary"/>
+                                        </strong>
+                                    </strong>
+                                    <div class="col-6">
+                                        <span t-esc="record.min_qty.value"/>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <span t-esc="record.delay.value"/>
+                                        days
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="product_customerinfo_tree_view" model="ir.ui.view">
+            <field name="name">product.customerinfo.tree.view</field>
+            <field name="model">product.customerinfo</field>
+            <field name="arch" type="xml">
+                <tree string="Customer Information" multi_edit="1">
+                    <field name="sequence" widget="handle" invisible="1"/>
+                    <field name="name" readonly="1" invisible="1"/>
+                    <field name="product_id" readonly="1" optional="hide"
+                           invisible="context.get('product_template_invisible_variant', False)"
+                           groups="product.group_product_variant"/>
+                    <field name="product_tmpl_id" string="Product" readonly="1"
+                           invisible="context.get('visible_product_tmpl_id', True)"/>
+                    <field name="product_name" optional="hide"/>
+                    <field name="product_code" optional="hide"/>
+                    <field name="barcode" optional="hide"/>
+                    <field name="currency_id" groups="base.group_multi_currency"/>
+                    <field name="date_start" optional="hide"/>
+                    <field name="date_end" optional="hide"/>
+                    <field name="company_id" readonly="1" groups="base.group_multi_company"/>
+                    <field name="min_qty"/>
+                    <field name="product_uom" groups="uom.group_uom"/>
+                    <field name="price" string="Price"/>
+                    <field name="delay" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="product_customerinfo_type_action" model="ir.actions.act_window">
+            <field name="name">Customer Pricelists</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.customerinfo</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="context">{'visible_product_tmpl_id':False}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No customer pricelist found
+                </p>
+                <p>
+                    Register the prices requested by your customer for each product, based on the quantity and the
+                    period.
+                </p>
+            </field>
+        </record>
+
+        <record id="product_customerinfo_product_tree_view" model="ir.ui.view">
+            <field name="name">product.customerinfo.tree.view</field>
+            <field name="model">product.customerinfo</field>
+            <field name="priority" eval="200"/>
+            <field name="arch" type="xml">
+                <tree string="Customer Information" multi_edit="1" create="false">
+                    <field name="name" readonly="1"/>
+                    <field name="product_id" readonly="1" optional="hide"
+                           invisible="context.get('product_template_invisible_variant', False)"
+                           groups="product.group_product_variant"/>
+                    <field name="product_tmpl_id" string="Product" readonly="1"
+                           invisible="context.get('visible_product_tmpl_id', True)"/>
+                    <field name="product_name" optional="hide"/>
+                    <field name="product_code" optional="hide"/>
+                    <field name="barcode" optional="hide"/>
+                    <field name="currency_id" groups="base.group_multi_currency"/>
+                    <field name="date_start" optional="hide"/>
+                    <field name="date_end" optional="hide"/>
+                    <field name="company_id" readonly="1" groups="base.group_multi_company"/>
+                    <field name="min_qty"/>
+                    <field name="product_uom" groups="uom.group_uom"/>
+                    <field name="price" string="Price"/>
+                    <field name="delay" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="product_customerinfo_product_tree_view_action" model="ir.actions.act_window">
+            <field name="name">Customers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.customerinfo</field>
+            <field name="view_id" ref="product_customerinfo_product_tree_view"/>
+            <field name="view_mode">tree</field>
+            <field name="context">{'search_default_product_tmpl_id': active_id}</field>
+        </record>
+
+        <record id="view_product_customer_form_inherit" model="ir.ui.view">
+            <field name="name">product.template.customer.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+
+                <header position="inside">
+                    <button string="Add Customer" type="object" name="action_add_customer_show_wizard"
+                            attrs="{'invisible':[('allow_customer','=',False)]}"/>
+                </header>
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" type="action"
+                            name="%(product_customerinfo_product_tree_view_action)d"
+                            attrs="{'invisible': [('allow_customer', '=', False)]}"
+                            icon="fa-usd">
+                        <field string="Customer" name="customer_product_count" widget="statinfo"/>
+                    </button>
+                </div>
+                <xpath expr="//label[@for='purchase_ok']" position="after">
+                    <div>
+                        <field name="allow_customer"/>
+                        <label for="allow_customer"/>
+                    </div>
+                </xpath>
+
+                <!--                <xpath expr="//page[@name='purchase']" position="after">-->
+                <!--                    <page name="customer" string="Customer" attrs="{'invisible':[('allow_customer','=',False)]}">-->
+                <!--                        <field name="customers_ids"-->
+                <!--                               context="{'default_product_tmpl_id':context.get('product_tmpl_id',active_id), 'product_template_invisible_variant': True, 'tree_view_ref':'product.product_customerinfo_tree_view'}"-->
+                <!--                               nolabel="1" attrs="{'invisible': [('product_variant_count','&gt;',1)]}"/>-->
+                <!--                        <field name="variant_customers_ids"-->
+                <!--                               context="{'default_product_tmpl_id': context.get('product_tmpl_id', active_id), 'tree_view_ref':'product.product_customerinfo_tree_view'}"-->
+                <!--                               nolabel="1" attrs="{'invisible': [('product_variant_count','&lt;=',1)]}"/>-->
+                <!--                    </page>-->
+                <!--                </xpath>-->
+            </field>
+        </record>
+
+        <record id="product_template_customer_tree_view" model="ir.ui.view">
+            <field name="name">product.template.customer.tree.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='standard_price']" position="after">
+                    <field name="from_customer" invisible="1"/>
+                    <field name="allow_customer" invisible="1"/>
+                    <field name="customer_price" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="one_silver_custom_product.one_customer_custom_product_add_wizard_form_view" model="ir.ui.view">
+            <field name="name">one.customer.custom.product.add.wizard.form.view</field>
+            <field name="model">one.customer.custom.product.add.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="customer_ids" options="{'no_create': True}"/>
+                    <footer>
+                        <button name="action_save" string="Confirm" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="btn btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

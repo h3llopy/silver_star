@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~ @author : ibralsmn [bralsmn@gmail.com]
+  ~ @filename : nagm-fady-new / security.xml
+  ~ @date : 9/23/21, 9:50 AM
+  ~ Copyright (c) 2021. All rights reserved.
+  ~
+  -->
+
+<odoo>
+    <data noupdate="0">
+        <record id="one_silver_customer_target.agent_user" model="res.groups">
+            <field name="name">Agent</field>
+            <field name="category_id" ref="base.module_category_user_type"/>
+        </record>
+    </data>
+
+</odoo>

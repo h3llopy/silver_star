@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+  ~ /**
+  ~  * @author : ${USER}
+  ~  * @mailto : ibralsmn@onesolutionc.com
+  ~  * @company : onesolutionc.com
+  ~  * @project : ${PROJECT_NAME}
+  ~  * @created : ${DATE}, ${DAY_NAME_FULL}
+  ~  * @package : ${PACKAGE_NAME}
+  ~ **/
+  -->
+
+<odoo>
+    <data noupdate="1">
+        <record id="one_silver_so_po_industry_serial.ir_cron_sequence" forcecreate="True" model="ir.cron">
+            <field name="name">Check Yearly Sequence</field>
+            <field name="model_id" ref="model_one_sequence"/>
+            <field name="state">code</field>
+            <field name="code">model.check_yearly_sequence()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+        </record>
+    </data>
+</odoo>

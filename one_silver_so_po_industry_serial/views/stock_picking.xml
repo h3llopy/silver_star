@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ /**
+  ~  * @author : ${USER}
+  ~  * @mailto : ibralsmn@onesolutionc.com
+  ~  * @company : onesolutionc.com
+  ~  * @project : ${PROJECT_NAME}
+  ~  * @created : ${DATE}, ${DAY_NAME_FULL}
+  ~  * @package : ${PACKAGE_NAME}
+  ~ **/
+  -->
+
+<odoo>
+    <data>
+
+        <record id="one_silver_so_po_industry_serial.stock_picking_inherit_form_view" model="ir.ui.view">
+            <field name="name">one.silver.industry.serial.stock.picking.form.view</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <br attrs="{'invisible':[('source_one_sequence','=',False)]}"/>
+                    <field name="source_one_sequence" readonly="1" force_save="1"/>
+                    <br attrs="{'invisible':[('income_one_sequence','=',False)]}"/>
+                    <field name="income_one_sequence" readonly="1" force_save="1"/>
+                    <br attrs="{'invisible':[('outgoing_one_sequence','=',False)]}"/>
+                    <field name="outgoing_one_sequence" readonly="1" force_save="1"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="one_silver_so_po_industry_serial.view_picking_internal_search" model="ir.ui.view">
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="/search/field[@name='name']" position="after">
+                    <field name="source_one_sequence"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

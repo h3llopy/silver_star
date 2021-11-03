@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="sultan_invoice_template_id">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div>
+                                <strong class="text-left">
+                                    <h3 t-esc="o.sale_id.create_uid.name"/>
+                                </strong>
+                                <strong class="text-left">
+                                    <h6 t-esc="time.strftime('%a %d %b %Y')"/>
+                                </strong>
+                                <strong class="text-left">
+                                    <h6 t-esc="time.strftime('%I:%M %p')"/>
+                                </strong>
+                            </div>
+                            <div style="margin-left:300px;">
+                                <t>
+                                    <h3 t-esc="o.sale_id.partner_id.name"/>
+                                </t>
+                            </div>
+                        </div>
+                        <table class="table table-borderless m-0" style=" border: none !important;">
+                            <tbody>
+                                <tr>
+                                    <td class="text-center"><t t-esc="o.sale_id.partner_id.name"/></td>
+                                    <td class="text-center"><t t-esc="o.sale_id.one_sequence"/></td>
+                                </tr>
+                                <tr>
+                                    <td/>
+                                    <td class="text-center">
+                                        <t t-esc="o.sale_id.get_delivery_address(o.sale_id.partner_shipping_id.id)"/>
+                                    </td>
+                                    <td class="text-center"><t t-esc="o.sale_id.date_order"/></td>
+                                </tr>
+                                <tr>
+                                    <td/>
+                                    <td class="text-center"><t t-esc="o.sale_id.user_id.name"/></td>
+                                    <td class="text-center"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-condensed">
+                            <tbody>
+                                <tr t-foreach="o.sale_id.order_line" t-as="l">
+                                    <td class="text-right">
+                                        <t t-esc="l.name"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="l.product_uom.name"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="l.product_id.uom_id.rounding"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="l.product_uom_qty"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="l.price_unit"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="l.price_subtotal"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-sm" style="page-break-inside: avoid;">
+                            <tbody>
+                                <tr>
+                                    <td colspan="2" class="text-right">
+                                        <t t-esc="sum(o.sale_id.order_line.mapped(lambda r: r.product_uom_qty * r.price_unit))"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="text-right">
+                                        <t t-esc="sum(o.sale_id.order_line.mapped(lambda r: r.product_uom_qty * r.price_unit))-o.sale_id.amount_untaxed"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">
+                                        <t t-esc="o.sale_id._get_total_with_user_lang(o.sale_id.amount_total)"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="o.sale_id.amount_total"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <template id="sultan_invoice_report_id">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="one_nagm_sale_reports.sultan_invoice_template_id" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="one_silver_purchase_reports.paperformat_purchase_voucher_landscape" model="report.paperformat">
+            <field name="name">PF Sale Order Landscape</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="one_silver_purchase_reports.report_purchase_voucher_report" model="ir.actions.report">
+            <field name="name">Purchase Voucher</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">one_silver_purchase_reports.report_purchase_voucher</field>
+            <field name="report_file">one_silver_purchase_reports.report_purchase_voucher</field>
+            <field name="binding_model_id" ref="model_purchase_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <template id="one_silver_purchase_reports.report_purchase_voucher_document">
+            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+            <div class="row  mx-3">
+                <div class="col">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="row d-block text-left">
+                                Logged User :
+                                <span t-esc="request.env.user.name"/>
+                            </div>
+                            <div class="row  d-block text-left">
+                                Print Datetime :
+                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row  d-block text-center">
+                                <span t-field="o.company_id.name"/>
+                            </div>
+                            <div class="row  d-block  text-center">
+                                <span>Purchase Voucher</span>
+                            </div>
+                            <div class="row  d-block  text-center">
+                                <span>Voucher Number :
+                                    <span t-field="o.partner_ref"/>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="row  d-block text-left">Currency :
+                                <span t-field="o.currency_id.name"/>
+                            </div>
+                            <div class="row  d-block text-left">Date :
+                                <span t-field="o.date_approve"/>
+                            </div>
+                            <div class="row  d-block text-left">Purchase Order :
+                                <span t-field="o.one_sequence"/>
+                            </div>
+                            <div class="row  d-block text-left">Supplier Invoices :
+                                <t t-foreach="o.invoice_ids" t-as="inv">0
+                                    <span t-field="inv.id"/>
+                                </t>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="row  d-block text-left">Supplier Code :
+                                <span t-field="o.partner_id.ref"/>
+                            </div>
+                            <div class="row  d-block text-left">Purchase Code :</div>
+                        </div>
+                        <div class="col-8">
+
+                            <div class="row  d-block text-left">Supplier Name :
+                                <span t-field="o.partner_id.name"/>
+                            </div>
+                            <div class="row  d-block text-left">Purchase:
+                                <span t-field="o.partner_id.shipping_type"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page">
+                <table class="table table-bordered table-sm o_main_table">
+                    <thead>
+                        <tr>
+                            <th name="th_internal" class="text-center">
+                                <span>Code</span>
+                            </th>
+                            <th name="th_description" class="text-center">
+                                <span>Description</span>
+                            </th>
+                            <th name="th_uom" class="text-center">
+                                <span>Unit</span>
+                            </th>
+                            <th name="th_quantity" class="text-center">
+                                <span>Qty</span>
+                            </th>
+                            <th name="th_price_unit" class="text-center">
+                                <span>Unit Price</span>
+                            </th>
+                            <th name="th_gross" class="text-center">
+                                <span>Gross</span>
+                            </th>
+                            <th name="th_manufact" class="text-center">
+                                <span>Manufacturing Date</span>
+                            </th>
+                            <th name="th_expiry">
+                                <span>Expiry Date</span>
+                            </th>
+                            <th name="th_amount" class="text-center">
+                                <span>Amount</span>
+                            </th>
+                            <th name="th_cost" class="text-center">
+                                <span>Cost</span>
+                            </th>
+                            <th name="th_cost_avg" class="text-center">
+                                <span>Avg. Cost</span>
+                            </th>
+                            <th name="th_min_price" class="text-center">
+                                <span>Min Price</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="o.order_line" t-as="line">
+                            <td class="text-right">
+                                <span t-field="line.product_id.default_code"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.product_id.name"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.product_uom.name" groups="uom.group_uom"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.product_qty"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.price_unit"/>
+                            </td>
+                            <td class="text-right">
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.prod_expire_date"/>
+
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.expire_date"/>
+
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.price_subtotal"
+                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.unit_lc_cost"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.product_id.standard_price"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.product_id.min_list_price"/>
+
+                            </td>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+
+        </template>
+
+        <template id="one_silver_purchase_reports.report_purchase_voucher">
+            <t t-call="web.basic_layout">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="one_silver_purchase_reports.report_purchase_voucher_document" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>
+

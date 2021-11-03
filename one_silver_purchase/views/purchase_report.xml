@@ -1,0 +1,15 @@
+<odoo>
+    <record id="one_silver_purchase.view_purchase_order_pivot" model="ir.ui.view">
+        <field name="name">inherit.purchase.report</field>
+        <field name="model">purchase.report</field>
+        <field name="priority" eval="1"/>
+        <field name="inherit_id" ref="purchase.view_purchase_order_pivot"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[last()]" position="after">
+            <field name="list_price" type="measure"/>
+            <field name="min_lst_price" type="measure"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

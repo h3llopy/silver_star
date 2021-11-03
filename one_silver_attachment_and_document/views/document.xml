@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="inherit_documents_document_form" model="ir.ui.view">
+        <field name="name">inherit.documents.document.form</field>
+        <field name="model">documents.document</field>
+        <field name="inherit_id" ref="documents.document_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="select_model"/>
+                <field name="sale_id" attrs="{'invisible':[('select_model','!=','sale')]}" force_save="1"/>
+                <field name="purchase_id" attrs="{'invisible':[('select_model','!=','purchase')]}" force_save="1"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="documents_document_tree" model="ir.ui.view">
+        <field name="name">documents.document.tree</field>
+        <field name="model">documents.document</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="type == 'empty'" sample="1">
+                <field name="name" string="Document" required="True"/>
+                <field name="url" optional="hide"/>
+                <field name="tag_ids" widget="documents_many2many_tags"/>
+                <field name="partner_id"/>
+                <field name="owner_id" widget="many2one_avatar_user"/>
+                <field name="lock_uid" optional="hide"/>
+                <field name="type"/>
+                <field name="create_date" widget="date"/>
+                <field name="activity_exception_decoration" widget="activity_exception"/>
+            </tree>
+        </field>
+    </record>
+    <record id="documents_document_action" model="ir.actions.act_window">
+        <field name="name">Documents</field>
+        <field name="res_model">documents.document</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="documents_document_tree"/>
+    </record>
+    <menuitem id="documents_document_menu"
+              name="Manage Documents "
+              action="documents_document_action"
+              parent="documents.menu_root"
+              sequence="3"
+    />
+</odoo>

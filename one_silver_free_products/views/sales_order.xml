@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~
+  ~ @author : ibralsmn [bralsmn@gmail.com]
+  ~ @filename : nagm-fady-new / sales_order.xml
+  ~ @date : 9/23/21, 9:50 AM
+  ~ Copyright (c) 2021. All rights reserved.
+  ~
+  -->
+
+<odoo>
+    <data>
+        <record id="one_silver_free_products.sale_order_form_view_inherit" model="ir.ui.view">
+            <field name="name">one.silver.free.products.sale.order.form.view.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//group[@name='sale_header']" position="after">
+                    <group>
+                        <group>
+                            <field name="reload_lines" readonly="1" force_save="1" invisible="1"/>
+
+                            <field name="main_sale_order" attrs="{'invisible':[('based_sale_order','=',False)]}"
+                                   readonly="1" force_save="1"/>
+                            <field name="free_remin_main_sale_order" attrs="{'invisible':[('based_sale_order','=',False)]}"
+                                   readonly="1" force_save="1"/>
+                            <field name="is_customer_allow_free" invisible="1"/>
+                            <field name="based_sale_order" invisible="1"/>
+                            <field name="apply_free" force_save="1" attrs="{'invisible':[('is_customer_allow_free','=',False)],
+                                                             }"/>
+                            <field name="free_method"
+                                   attrs="{'invisible':['|',('is_customer_allow_free','=',False),('apply_free','=',False)],'required':[('apply_free','=',True)],
+                                           'readonly':['|',('based_sale_order', '=', True),'|',('state','not in',['draft', 'sent']),('is_free_order', '=', True)]}"/>
+                        </group>
+                        <group>
+                            <field name="free_types" widget="many2many_tags" context="{'customer_id':partner_id,'is_free_order':is_free_order,'based_sale_order':based_sale_order}"
+                                   attrs="{'invisible':['|',('is_customer_allow_free','=',False),('apply_free','=',False)], 'readonly':[('state','not in',['draft', 'sent'])],'required':[('apply_free','=',True)]}"
+                                   options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True,'always_reload': True,'clickable': '1'}"/>
+                        </group>
+                    </group>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']" position="after">
+                    <page name="free_sale_orders" string="Related Sales Order"
+                          attrs="{'invisible':['|',('based_sale_order','=',True),'|',('apply_free','=',False),('related_sale_orders', '=',False)]}">
+                        <field name="related_sale_orders" readonly="1"/>
+
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="free_sale_total">
+                            <div class="oe_subtotal_footer_separator oe_inline o_td_label"
+                                 attrs="{'invisible':['|',('based_sale_order', '=', True),'|',('is_free_order','=',True),('apply_free','=',False)]}">
+                                <label for="related_free_sales_order_total"/>
+                            </div>
+                            <field name="related_free_sales_order_total" nolabel="1"
+                                   class="oe_subtotal_footer_separator"
+                                   widget="monetary" options="{'currency_field': 'currency_id'}" force_save="1"
+                                   attrs="{'invisible':['|',('based_sale_order', '=', True),'|',('is_free_order','=',True),('apply_free','=',False)]}"/>
+
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//field[@name='order_line']" position="attributes">
+                    <attribute name="attrs">{'readonly':[('state','not in',['draft', 'sent'])],}
+                    </attribute>
+                    <attribute name="force_save">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='tax_totals_json']" position="after">
+                    <div class="oe_subtotal_footer_separator oe_inline o_td_label"
+                         attrs="{'invisible':['|',('based_sale_order', '=', True),'|',('is_free_order','=',True),('apply_free','=',False)]}">
+                        <label for="free_total"/>
+                    </div>
+                    <field name="free_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" readonly="1" force_save="1"
+                           options="{'currency_field': 'currency_id'}"
+                           attrs="{'invisible':['|',('based_sale_order', '=', True),'|',('is_free_order','=',True),('apply_free','=',False)]}"/>
+
+                    <div class="oe_subtotal_footer_separator oe_inline o_td_label"
+                         attrs="{'invisible':['|',('based_sale_order', '=', True),'|',('is_free_order','=',False),('apply_free','=',False)]}">
+                        <label for="amount_total_with_free"/>
+                    </div>
+                    <field name="amount_total_with_free" nolabel="1" class="oe_subtotal_footer_separator"
+                           widget="monetary" options="{'currency_field': 'currency_id'}" force_save="1"
+                           attrs="{'invisible':['|',('based_sale_order', '=', True),'|',('is_free_order','=',False),('apply_free','=',False)]}"/>
+
+
+                    <div class="oe_subtotal_footer_separator oe_inline o_td_label"
+                         attrs="{'invisible':['|',('based_sale_order', '=', True),'|',('is_free_order','=',True),('apply_free','=',False)]}">
+                        <label for="amount_free_used"/>
+                    </div>
+                    <field name="amount_free_used" nolabel="1" class="oe_subtotal_footer_separator"
+                           widget="monetary" options="{'currency_field': 'currency_id'}" force_save="1"
+                           attrs="{'invisible':['|',('based_sale_order', '=', True),'|',('is_free_order','=',True),('apply_free','=',False)]}"/>
+
+                    <div class="oe_subtotal_footer_separator oe_inline o_td_label"
+                         attrs="{'invisible':['|',('based_sale_order', '=', True),'|',('is_free_order','=',True),('apply_free','=',False)]}">
+                        <label for="related_free_sales_order_total"/>
+                    </div>
+                    <field name="related_free_sales_order_total" nolabel="1" class="oe_subtotal_footer_separator"
+                           widget="monetary" options="{'currency_field': 'currency_id'}" force_save="1"
+                           attrs="{'invisible':['|',('based_sale_order', '=', True),'|',('is_free_order','=',True),('apply_free','=',False)]}"/>
+
+                    <div class="oe_subtotal_footer_separator oe_inline o_td_label"
+                         attrs="{'invisible':['|',('based_sale_order', '=', True),'|',('is_free_order','=',True),('apply_free','=',False)]}">
+                        <label for="amount_free_remin"/>
+                    </div>
+                    <field name="amount_free_remin" nolabel="1" class="oe_subtotal_footer_separator"
+                           widget="monetary" options="{'currency_field': 'currency_id'}" force_save="1"
+                           attrs="{'invisible':['|',('based_sale_order', '=', True),'|',('is_free_order','=',True),('apply_free','=',False)]}"/>
+
+                    <div class="oe_subtotal_footer_separator oe_inline o_td_label"
+                         attrs="{'invisible':['|',('based_sale_order', '!=', True),'|',('is_free_order','=',True),('apply_free','=',False)]}">
+                        <label for="free_total_inner_free_order"/>
+                    </div>
+                    <field name="free_total_inner_free_order" nolabel="1" class="oe_subtotal_footer_separator"
+                           widget="monetary" options="{'currency_field': 'currency_id'}" force_save="1"
+                           attrs="{'invisible':['|',('based_sale_order', '!=', True),'|',('is_free_order','=',True),('apply_free','=',False)]}"/>
+
+
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="is_free_order" groups="one_silver_free_products.create_free_sale_order"
+                           attrs="{'invisible':[('based_sale_order','=',True)],'readonly':[('state','not in',['draft', 'sent'])]}"/>
+
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="attrs">{'readonly':['|',('based_sale_order', '=', True),('state','not in',['draft',
+                        'sent'])],'force_save':'1'}
+                    </attribute>
+
+                </xpath>
+                <xpath expr="//field[@name='pricelist_id']" position="attributes">
+                    <attribute name="attrs">{'readonly':['|',('based_sale_order', '=', True),('state','not in',['draft',
+                        'sent'])],'force_save':'1'}
+                    </attribute>
+
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree" position="attributes">
+                    <attribute name="decoration-success">is_free==True</attribute>
+
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']"
+                       position="before">
+                    <field name="reload_lines" readonly="1" force_save="1" invisible="1"/>
+                    <field name="pricelist_id" readonly="1" force_save="1" invisible="1"/>
+                    <field name="is_free" readonly="1" force_save="1" invisible="1"/>
+                    <field name="based_sale_order" readonly="1" force_save="1" invisible="1"/>
+                    <field name="apply_free" readonly="1" force_save="1" invisible="1"/>
+                    <field name="is_free_order" readonly="1" force_save="1" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']"
+                       position="attributes">
+                    <attribute name="attrs">{'readonly':[('apply_free','=',True),('is_free','=',True)],'force_save':'1'}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='name']"
+                       position="attributes">
+                    <attribute name="attrs">{'readonly':['|',('based_sale_order','=',
+                        True),'|',('is_free_order','=',True),('is_free','=',True)],'force_save':'1'}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']"
+                       position="attributes">
+                    <attribute name="attrs">{'readonly':['|',('based_sale_order','=',
+                        True),'|',('is_free_order','=',True),('is_free','=',True)],'force_save':'1'}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='tax_id']"
+                       position="attributes">
+                    <attribute name="attrs">{'readonly':['|',('based_sale_order','=',
+                        True),'|',('is_free_order','=',True),('is_free','=',True)],'force_save':'1'}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='customer_lead']"
+                       position="attributes">
+                    <attribute name="attrs">{'readonly':['|',('based_sale_order','=',
+                        True),'|',('is_free_order','=',True),('is_free','=',True)],'force_save':'1'}</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']"
+                       position="attributes">
+                    <attribute name="attrs">{'readonly':['|','|',('based_sale_order','=',
+                        True),('is_free_order','=',True),('is_free','=',True)]}
+                    </attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_template_id']"
+                       position="attributes">
+                    <attribute name="attrs">{'readonly':['&amp;',('apply_free','=',
+                        True),('is_free','=',True)],}
+                    </attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="one_silver_free_products.sale_order_add_free_product_wizard" model="ir.ui.view">
+            <field name="name">one.sale.order.add.free.product.wizard</field>
+            <field name="model">one.sale.order.free.product.add.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="free_type_type" invisible="1"/>
+                    <field name="sales_order_add_free_products" open="false"
+                           options="{'no_create': True, 'no_create_edit':True, 'no_open':True,'always_reload': True}"
+                           context="{'default_sale_order_id':active_id, 'default_free_type_type':free_type_type}">
+                        <tree string="Free Product" editable="bottom">
+                            <field name="free_type_type" invisible="1" force_save="1"/>
+                            <field name="sale_order_id" invisible="1" force_save="1"/>
+                            <field name="product_tmpl_id" domain="[('allow_free','=',True)]" required="1"/>
+                            <field name="product_id" required="1"/>
+                            <field name="product_uom_category_id" invisible="1"/>
+                            <field name="product_uom_id" force_save="1"/>
+                            <field name="company_id" invisible="1" force_save="1"/>
+
+                            <field name="qty" required="1"/>
+                            <field name="price_unit" readonly="1" force_save="1"/>
+                            <field name="discount" readonly="1" invisible="1" force_save="1"/>
+                            <field name="currency_id" readonly="1" invisible="1" force_save="1"/>
+                            <field name="unit_total" readonly="1" sum="Total" force_save="1"/>
+                        </tree>
+                    </field>
+
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

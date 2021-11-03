@@ -1,0 +1,1 @@
+{    'name': 'Books Rep',    'summary': 'Book Rep',    'category': 'Accounting',    'author': 'Ezz Eldin Saleh',    'depends': ['base','account'],    'data': [        'views/res_partner.xml',        'views/rep_books.xml',        'security/ir.model.access.csv',        'views/account_payment.xml',             ],    'installable': True,    'auto_install': False,}

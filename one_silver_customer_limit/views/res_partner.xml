@@ -1,0 +1,34 @@
+<odoo>
+
+    <record id="one_silver_customer_limit.view_res_partner_form_inherit" model="ir.ui.view">
+        <field name="name">view.res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr='//group[2]' position='after'>
+            <group attrs="{'invisible':[('credit_check','=',False)]}">
+                <group>
+                    <field name="credit"/>
+                </group>
+                <group>
+                    <field name="debit"/>
+                </group>
+            </group>
+            </xpath>
+            <xpath expr="//group[@name='container_row_2']" position="inside">
+                <group name="container_row_credit">
+                    <group string="Credit Limit" >
+                        <field name="credit_check"/>
+                        <field name="credit_warning" attrs="{'invisible': [('credit_check', '=', False)], 'required':[('credit_check','=',True)]}"/>
+                        <field name="credit_blocking" attrs="{'invisible': [('credit_check', '=', False)], 'required':[('credit_check','=',True)]}"/>
+                    </group>
+                    <group string="Day Limit" >
+                        <field name="days_check"/>
+                        <field name="days_warning" attrs="{'invisible': [('days_check', '=', False)],'required':[('days_check','=',True)]}"/>
+                        <field name="days_blocking" attrs="{'invisible': [('days_check', '=', False)],'required':[('days_check','=',True)]}"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

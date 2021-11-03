@@ -1,0 +1,1 @@
+{    'name': 'PriceList Items',    'author': 'EzzEldin',    'version': '15.0.1.0.0',    'depends': ['base', 'sale_management', 'product'],    'data': [        'views/pricelist_item_menu.xml',    ],}

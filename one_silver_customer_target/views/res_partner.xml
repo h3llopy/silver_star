@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="one_silver_customer_target.res_partner_form_view_inherit" model="ir.ui.view">
+            <field name="name">one.silver.customer.target.res.partner.form.view.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                    <div name="button_box" position="inside">
+                        <button class="oe_stat_button" type="object" name="get_customer_targets"
+                                icon="fa-bars" string="Targets">
+                        </button>
+                    </div>
+                <xpath expr="//group" position="before">
+                    <group>
+                        <div >
+                            <field name="is_agent" class="oe_inline"/>
+                            <span> Is Agent </span>
+                            <button name="create_agent_user" string="Create Agent" class="oe_highlight"  type="object" attrs="{'invisible':['|',('is_agent','=',False),('related_agent_user','!=',False)]}" />
+                            <field name="related_agent_user" attrs="{'invisible':[('is_agent','=',False)]}" readonly="1"/>
+
+                        </div>
+                    </group>
+                </xpath>
+
+
+            </field>
+        </record>
+
+        <record id="one_silver_customer_target.create_agent_user_list" model="ir.actions.server">
+            <field name="name">Create Agent Users</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="binding_model_id" ref="base.model_res_partner"/>
+            <field name="binding_view_types">form,list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.create_agent_user()</field>
+        </record>
+    </data>
+</odoo>

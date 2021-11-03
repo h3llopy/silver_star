@@ -1,0 +1,44 @@
+
+<!--
+  ~ /**
+  ~  * @author : ${USER}
+  ~  * @mailto : ibralsmn@onesolutionc.com
+  ~  * @company : onesolutionc.com
+  ~  * @project : ${PROJECT_NAME}
+  ~  * @created : ${DATE}, ${DAY_NAME_FULL}
+  ~  * @package : ${PACKAGE_NAME}
+  ~ **/
+  -->
+
+<odoo>
+    <data noupdate="1">
+
+        <record id="res_partner_industry_general" model="res.partner.industry">
+            <field name="id">100</field>
+            <field name="name">General</field>
+            <field name="full_name">Default Of All New Customers</field>
+            <field name="code">GNRL</field>
+        </record>
+        <!--
+                          <record id="object1" model="one_silver_so_po_industry_serial.one_silver_so_po_industry_serial">
+                            <field name="name">Object 1</field>
+                            <field name="value">10</field>
+                          </record>
+
+                          <record id="object2" model="one_silver_so_po_industry_serial.one_silver_so_po_industry_serial">
+                            <field name="name">Object 2</field>
+                            <field name="value">20</field>
+                          </record>
+
+                          <record id="object3" model="one_silver_so_po_industry_serial.one_silver_so_po_industry_serial">
+                            <field name="name">Object 3</field>
+                            <field name="value">30</field>
+                          </record>
+
+                          <record id="object4" model="one_silver_so_po_industry_serial.one_silver_so_po_industry_serial">
+                            <field name="name">Object 4</field>
+                            <field name="value">40</field>
+                          </record>
+                -->
+    </data>
+</odoo>

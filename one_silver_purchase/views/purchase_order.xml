@@ -1,0 +1,286 @@
+<odoo>
+    <record id="one_silver_purchase.purchase_order_form_inherit" model="ir.ui.view">
+        <field name="name">inherit.purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="priority" eval="1"/>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_create_invoice']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('state', 'not in', ('purchase', 'done' ,'shipped', 'inside_port','outside_port')),
+                    ('invoice_status', 'in', ('no', 'invoiced'))]}
+                </attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_rfq_send']" position="replace">
+
+                <button name="action_rfq_send" states="purchase,shipped,inside_port,outside_port" string="Send PO by Email" type="object"
+                        context="{'send_rfq':False}" data-hotkey="g"/>
+            </xpath>
+            <xpath expr="//button[@name='confirm_reminder_mail']" position="replace">
+
+                <button name="confirm_reminder_mail" string="Confirm Receipt Date" type="object"
+                        attrs="{'invisible': ['|','|', ('state', 'not in', ('purchase', 'done','shipped', 'inside_port','outside_port')), ('mail_reminder_confirmed', '=', True), ('date_planned', '=', False)]}"
+                        groups="base.group_no_one" data-hotkey="o"/>
+            </xpath>
+            <xpath expr="//button[@name='button_cancel']" position="replace">
+
+                <button name="button_cancel" states="draft,to approve,sent,purchase,shipped,inside_port,outside_port" string="Cancel" type="object"
+                        data-hotkey="x"/>
+            </xpath>
+            <xpath expr="//button[@name='button_done']" position="replace">
+                <button name="button_done" type="object" string="Lock" states="purchase,shipped,inside_port,outside_port" data-hotkey="l"/>
+
+            </xpath>
+
+            <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='product_id']" position="after">
+                <field name="expire_date" invisible="1" force_save="1"/>
+                <field name="prod_expire_date" invisible="1" force_save="1"/>
+                <field name="unit_lc_cost" invisible="1" force_save="1"/>
+                <field name="list_price" invisible="1" force_save="1"/>
+                <field name="min_list_price" invisible="1" force_save="1"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="one_silver_purchase.inherit_purchase_order_form" model="ir.ui.view">
+        <field name="name">inherit.purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="priority" eval="1"/>
+        <field name="inherit_id" ref="purchase_stock.purchase_order_view_form_inherit"/>
+        <field name="arch" type="xml">
+
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" type="object" name="get_related_po_landed_cost"
+                        icon="fa-bars" string="Landed Cost">
+                    <field name="landed_cost_count"/>
+                </button>
+            </div>
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="shipping_type" invisible="1"/>
+                <label for="date_order" invisible='1'/>
+                <div name="reminder" class="o_row" attrs="{'invisible':[('date_order','=',False)]}">
+                    <field name="deadline_user_reminder_email"
+                           attrs="{'readonly': [('state', 'in', ('purchase','cancel','shipped','inside_port','outside_port'))]}"/>
+                    <span>Notify</span>
+                    <div class="o_row oe_inline" attrs="{'invisible':[('deadline_user_reminder_email','=',False)]}">
+                        <field name="deadline_user_reminder_email_days" class="oe_inline"
+                               attrs="{'required':[('deadline_user_reminder_email','=',True)],'readonly': [('state', 'in', ('purchase','cancel','shipped','inside_port','outside_port'))]}"/>
+                        day(s)
+                        <field name="deadline_user_reminder_email_notify_sort" class="oe_inline"
+                               attrs="{'required':[('deadline_user_reminder_email','=',True)],'readonly': [('state', 'in', ('purchase','cancel','shipped','inside_port','outside_port'))]}"/>
+                        <span>will Pay %</span>
+                        <field name="receipt_percent"
+                               attrs="{'invisible':[('date_order','=',False)],'readonly': [('state', 'in', ('purchase','cancel','shipped','inside_port','outside_port'))]}"/>
+                    </div>
+                </div>
+                <field name="deadline_one_payment_method"
+                       attrs="{'invisible':[('date_order','=',False)],'readonly': [('state', 'in', ('purchase','cancel','shipped','inside_port','outside_port'))]}"/>
+
+            </xpath>
+            <xpath expr="//button[@name='action_view_picking'][1]" position="replace">
+
+                <button name="action_view_picking"
+                        string="Receive Products" class="oe_highlight" type="object"
+                        attrs="{'invisible': ['|', '|' , ('is_shipped', '=', True), ('state','not in', ('purchase','done','outside_port')), ('incoming_picking_count', '=', 0)]}"
+                        data-hotkey="y" groups="stock.group_stock_user"/>
+            </xpath>
+            <xpath expr="//field[@name='date_planned']" position="replace">
+
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page[@name='purchase_delivery_invoice']" position="after">
+                <page string="Dates/Payments" name="purchase_dates_payments">
+                    <group>
+                        <group>
+                            <field name="date_planned" attrs="{'readonly':0}"/>
+                            <label for="date_planned" invisible='1'/>
+                            <div name="reminder" class="o_row" attrs="{'invisible':[('date_planned','=',False)]}">
+                                <field name="receipt_user_reminder_email"
+                                       attrs="{'readonly': [('state', 'in', ('purchase','cancel','shipped','inside_port','outside_port'))]}"/>
+                                <span>Notify</span>
+                                <div class="o_row oe_inline" attrs="{'invisible':[('receipt_user_reminder_email','=',False)]}">
+                                    <field name="receipt_user_reminder_email_days" class="oe_inline"
+                                           attrs="{'required':[('receipt_user_reminder_email','=',True)],'readonly': [('state', 'in', ('purchase','cancel','shipped','inside_port','outside_port'))]}"/>
+                                    day(s)
+                                    <field name="receipt_user_reminder_email_notify_sort" class="oe_inline"
+                                           attrs="{'required':[('receipt_user_reminder_email','=',True)],'readonly': [('state', 'in', ('purchase','cancel','shipped','inside_port','outside_port'))]}"/>
+                                    <span>will Pay %</span>
+                                    <field name="receipt_percent"
+                                           attrs="{'invisible':[('date_planned','=',False)],'readonly': [('state', 'in', ('purchase','cancel','shipped','inside_port','outside_port'))]}"/>
+                                </div>
+                            </div>
+                            <field name="receipt_one_payment_method"
+                                   attrs="{'invisible':[('date_planned','=',False)],'readonly': [('state', 'in', ('purchase','cancel','shipped','inside_port','outside_port'))]}"/>
+
+                        </group>
+                        <group>
+                            <field name="shipping_date"
+                                   attrs="{'invisible':['|',('partner_id','=',False),('shipping_type','=','internal')],'readonly': [('state', 'in', ('cancel','shipped','inside_port','outside_port'))]}"/>
+                            <label for="shipping_date" invisible='1'/>
+                            <div name="reminder" class="o_row" attrs="{'invisible':[('shipping_date','=',False)]}">
+                                <field name="shipping_date_reminder_email"
+                                       attrs="{'readonly': [('state', 'in', ('cancel','shipped','inside_port','outside_port'))]}"/>
+                                <span>Notify</span>
+                                <div class="o_row oe_inline" attrs="{'invisible':[('shipping_date_reminder_email','=',False)],}">
+                                    <field name="shipping_date_reminder_email_days" class="oe_inline"
+                                           attrs="{'required':[('shipping_date_reminder_email','=',True)],'readonly': [('state', 'in', ('cancel','shipped','inside_port','outside_port'))]}"/>
+                                    day(s)
+                                    <field name="shipping_date_reminder_email_notify_sort" class="oe_inline"
+                                           attrs="{'required':[('shipping_date_reminder_email','=',True)],'readonly': [('state', 'in', ('cancel','shipped','inside_port','outside_port'))]}"/>
+
+                                    <span>will Pay %</span>
+                                    <field name="shipping_percent"
+                                           attrs="{'invisible':[('shipping_date_reminder_email','=',False)],'readonly': [('state', 'in', ('cancel','shipped','inside_port','outside_port'))]}"/>
+                                </div>
+
+                            </div>
+                            <field name="shipping_one_payment_method"
+                                   attrs="{'invisible':[('shipping_date_reminder_email','=',False)],'readonly': [('state', 'in', ('cancel','shipped','inside_port','outside_port'))]}"/>
+
+                        </group>
+                        <group>
+                            <field name="inside_port_date"
+                                   attrs="{'invisible':['|',('partner_id','=',False),('shipping_type','=','internal')],'readonly': [('state', 'in', ('cancel','inside_port','outside_port'))]}"/>
+                            <label for="inside_port_date" invisible='1'/>
+                            <div name="reminder" class="o_row" attrs="{'invisible':[('inside_port_date','=',False)]}">
+                                <field name="inside_port_date_reminder_email"
+                                       attrs="{'readonly': [('state', 'in', ('cancel','inside_port','outside_port'))]}"/>
+                                <span>Notify</span>
+                                <div class="o_row oe_inline" attrs="{'invisible':[('inside_port_date_reminder_email','=',False)]}">
+                                    <field name="inside_port_date_reminder_email_days" class="oe_inline"
+                                           attrs="{'required':[('inside_port_date_reminder_email','=',True)],'readonly': [('state', 'in', ('cancel','inside_port','outside_port'))]}"/>
+                                    day(s)
+                                    <field name="inside_port_date_reminder_email_notify_sort" class="oe_inline"
+                                           attrs="{'required':[('inside_port_date_reminder_email','=',True)],'readonly': [('state', 'in', ('cancel','inside_port','outside_port'))]}"/>
+                                    <span>will Pay %</span>
+                                    <field name="inside_port_percent"
+                                           attrs="{'invisible':[('inside_port_date_reminder_email','=',False)],'readonly': [('state', 'in', ('cancel','outside_port'))]}"/>
+                                </div>
+                            </div>
+                            <field name="inside_port_one_payment_method"
+                                   attrs="{'invisible':[('inside_port_date_reminder_email','=',False)],'readonly': [('state', 'in', ('cancel','outside_port'))]}"/>
+
+                        </group>
+                        <group>
+                            <field name="outside_port_date"
+                                   attrs="{'invisible':['|',('partner_id','=',False),('shipping_type','=','internal')],'readonly': [('state', 'in', ('cancel','outside_port'))]}"/>
+                            <label for="outside_port_date" invisible='1'/>
+                            <div name="reminder" class="o_row" attrs="{'invisible':[('outside_port_date','=',False)]}">
+                                <field name="outside_port_date_reminder_email" attrs="{'readonly': [('state', 'in', ('cancel','outside_port'))]}"/>
+                                <span>Notify</span>
+                                <div class="o_row oe_inline" attrs="{'invisible':[('outside_port_date_reminder_email','=',False)]}">
+                                    <field name="outside_port_date_reminder_email_days" class="oe_inline"
+                                           attrs="{'required':[('outside_port_date_reminder_email','=',True)],'readonly': [('state', 'in', ('cancel','outside_port'))]}"/>
+                                    day(s)
+                                    <field name="outside_port_date_reminder_email_notify_sort" class="oe_inline"
+                                           attrs="{'required':[('outside_port_date_reminder_email','=',True)],'readonly': [('state', 'in', ('cancel','outside_port'))]}"/>
+                                    <span>will Pay %</span>
+                                    <field name="outside_port_percent"
+                                           attrs="{'invisible':[('outside_port_date_reminder_email','=',False)],'readonly': [('state', 'in', ('cancel','outside_port'))]}"/>
+                                </div>
+                            </div>
+                            <field name="outside_port_one_payment_method"
+                                   attrs="{'invisible':[('outside_port_date_reminder_email','=',False)],'readonly': [('state', 'in', ('cancel','outside_port'))]}"/>
+
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//button[@name='button_confirm']" position="after">
+                <button name="shipped_from_supplier" string="Shipped From Supplier" type="object" class="oe_highlight"
+                        attrs="{'invisible':['|',('shipping_type','=','internal'),('state','!=','purchase')]}"/>
+                <button name="port_has_been_reached" string="Port Has Been Reached" type="object" class="oe_highlight"
+                        attrs="{'invisible':['|',('shipping_type','=','internal'),('state','!=','shipped')]}"/>
+                <button name="extracted_from_the_port" string="Extracted From The Port" type="object" class="oe_highlight"
+                        attrs="{'invisible':['|',('shipping_type','=','internal'),('state','!=','inside_port')]}"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'not in', ('draft', 'sent'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'not in', ('draft', 'sent'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_ref']" position="after">
+                <field name="partner_ref_date"/>
+                <field name="shipping_via"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_ref']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'not in', ('draft', 'sent'))]}</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="purchase.purchase_form_action" model="ir.actions.act_window">
+        <field name="name">Purchase Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">tree,kanban,form,pivot,graph,calendar,activity</field>
+        <field name="view_id" ref="purchase.purchase_order_view_tree"/>
+        <field name="domain">[('state','in',('purchase', 'done','shipped','inside_port','outside_port'))]</field>
+        <field name="search_view_id" ref="purchase.purchase_order_view_search"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No purchase order found. Let's create one!
+            </p>
+            <p>
+                Once you ordered your products to your supplier, confirm your request for quotation and it will turn into a purchase order.
+            </p>
+        </field>
+    </record>
+
+    <record id="one_silver_purchase.one_payment_method" model="ir.ui.view">
+        <field name="name">one.silver.purchase.one.payment.method</field>
+        <field name="model">one.payment.method</field>
+        <field name="arch" type="xml">
+            <tree editable="top" multi_edit="1">
+                <field name="name" required="1"/>
+                <field name="company_id" required="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="one_silver_purchase.one_payment_method_action" model="ir.actions.act_window">
+        <field name="name">Custom Payment Method</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">one.payment.method</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="one_silver_purchase.one_payment_method"/>
+    </record>
+
+    <menuitem id="one_silver_purchase.one_payment_method_menuitem" name="Payment Method" parent="purchase.menu_purchase_config"
+              sequence="7" action="one_silver_purchase.one_payment_method_action"/>
+
+    <record id="one_silver_purchase.purchase_order_payment_schedule" model="ir.ui.view">
+        <field name="name">one.silver.purchase.purchase.order.payment.schedule</field>
+        <field name="model">purchase.order.payment.schedule</field>
+        <field name="arch" type="xml">
+            <tree editable="top" create="false">
+                <field name="purchase_order_id" readonly="1" force_save="1"/>
+                <field name="vendor_id" readonly="1" force_save="1"/>
+                <field name="action_type" readonly="1" force_save="1"/>
+                <field name="action_date" readonly="1" force_save="1"/>
+                <field name="schedule_date" readonly="1" force_save="1"/>
+                <field name="action_percent" readonly="1" force_save="1"/>
+                <field name="action_amount" readonly="1" force_save="1"/>
+                <field name="currency_id" readonly="1" force_save="1"/>
+                <field name="payment_status" readonly="1" force_save="1"/>
+                <field name="one_payment_method" attrs="{'readonly':[('payment_status','=','paid')]}"/>
+                <button name="do_one_payment" string="Do Pay" type="object" class="oe_highlight"
+                        attrs="{'invisible': [('payment_status', '=', 'paid')]}"/>
+                <button name="de_one_unpaid" string="Do UnPay" type="object" class="btn-info"
+                        attrs="{'invisible': [('payment_status', '=', 'unpaid')]}"/>
+            </tree>
+        </field>
+    </record>
+    <record id="one_silver_purchase.purchase_order_payment_schedule_action" model="ir.actions.act_window">
+        <field name="name">Purchase Order Payment Schedule</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.order.payment.schedule</field>
+        <field name="view_mode">tree,pivot,graph</field>
+        <field name="view_id" ref="one_silver_purchase.purchase_order_payment_schedule"/>
+    </record>
+
+    <menuitem id="one_silver_purchase.purchase_order_payment_schedule_menuitem" name="PO Schedule Payments" parent="purchase.purchase_report_main"
+              sequence="7" action="one_silver_purchase.purchase_order_payment_schedule_action"/>
+
+
+</odoo>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~
+  ~ @author : ibralsmn [bralsmn@gmail.com]
+  ~ @filename : nagm-fady-new / sale_order.xml
+  ~ @date : 9/23/21, 9:50 AM
+  ~ Copyright (c) 2021. All rights reserved.
+  ~
+  -->
+
+<odoo>
+    <data>
+
+        <record id="one_silver_employee_price_limit.sale_order_form_view_inherit" model="ir.ui.view">
+            <field name="name">one.inherit.limit.price.sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="one_silver_free_products.sale_order_form_view_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form//header//button[@name='action_confirm'][1]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//form//header//button[@name='action_confirm'][2]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                                <xpath expr="//button[@name='action_confirm']" position="before">
+                                    <field name="amount_total" invisible="1"/>
+                                    <field name="is_free_order" readonly="1" force_save="1" invisible="1"/>
+
+                                    <button name="action_add_free_product_wizard" id="add_free_product_sale_order" string="Add Free Product" type="object"
+                                            class="btn-primary"
+                                            attrs="{'invisible':['|', ('apply_free','=',False),'|',('amount_total','=',0),'|',('state','in',['need_approve', 'sale',
+                                        'done']),'|',('based_sale_order','=',True),'|',('need_approve','=',True),('is_free_order','=',True)]}"
+                                    />
+                                    <button name="new_sale_order_create" string="Free Sale Order" type="object"
+                                            class="btn-primary" groups="one_silver_free_products.create_free_inner_sale_order"
+                                            attrs="{'invisible':['|', ('apply_free','=',False),'|',('state','not in',['sale', 'done','cancel']), '|',('amount_free_remin', '=', 0),('based_sale_order','=',True)]}"
+                                    />
+                                </xpath>
+                <xpath expr="//field[@name='order_line']/tree" position="attributes">
+                    <attribute name="decoration-warning">need_approve==True and approve_done==False</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree" position="attributes">
+                    <attribute name="decoration-info">need_approve==True and approve_done==True</attribute>
+                </xpath>
+                <xpath expr="//group[@name='sale_header']" position="after">
+
+                    <group>
+                        <group>
+                            <field name="user_limit_type" force_save="1" attrs="{'invisible':[('based_sale_order','=', True)]}"/>
+                            <field name="user_limit_method" required="1"
+                                   attrs="{'readonly':['|',('user_limit_type','!=','user_limit'),('state','not in',['draft', 'sent'])],'invisible':['|',('based_sale_order','=', True),('user_limit_type','=', 'product_limit')]}"/>
+                            <field name="can_confirm" invisible="1" readonly="0" force_save="1"/>
+                            <field name="need_approve" invisible="1" force_save="1"/>
+                        </group>
+                        <group>
+                            <field name="user_have_limit" invisible="1" force_save="1"/>
+                        </group>
+                    </group>
+                </xpath>
+                <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='price_unit']"
+                       position="before">
+                    <field name="origin_price_unit" invisible="1"/>
+                </xpath>
+                <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='price_unit']"
+                       position="attributes">
+                    <attribute name="attrs">{'readonly':[('user_limit_method','=','percent')]}</attribute>
+                </xpath>
+                <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='discount']"
+                       position="before">
+                    <field name="user_have_limit" invisible="1" force_save="1"/>
+                    <field name="user_limit_type" invisible="1" force_save="1"/>
+                    <field name="user_limit_method" invisible="1" force_save="1"/>
+                    <field name="need_approve" invisible="1" force_save="1"/>
+                    <field name="approve_done" invisible="1" force_save="1"/>
+
+                </xpath>
+                <xpath expr="//field[@name='order_line']"
+                       position="attributes">
+                    <attribute name="attrs">{'readonly':[('state','not in',['draft'])]}</attribute>
+                </xpath>
+                <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='discount']"
+                       position="attributes">
+                    <attribute name="attrs">{'readonly':['|',('user_limit_type','=','product_limit'),'|',('user_limit_method','=','amount'),'|',('is_free_order','=',True),('user_limit_type','=','product_limit')]}</attribute>
+                </xpath>
+
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" type="object" name="get_sale_order_lines_need_approve"
+                            attrs="{'invisible':['|',('based_sale_order','=', True),('sale_order_line_need_approve_count','&lt;=',0)]}"
+                            icon="fa-tasks">
+                        <field string="Need Approve" name="sale_order_line_need_approve_count" widget="statinfo"/>
+                    </button>
+                </div>
+            </field>
+        </record>
+        <record id="one_silver_employee_price_limit.need_approve_tree_view" model="ir.ui.view">
+            <field name="name">one.sale.order.line.need.approve.form.view</field>
+            <field name="model">one.sale.order.line.need.approve</field>
+            <field name="arch" type="xml">
+                <tree create="false" editable="bottom" delete="false">
+
+                    <field name="user_limit_method" invisible="1"/>
+                    <field name="sale_order_id" invisible="1"/>
+                    <field name="user_limit_type" invisible="1"/>
+                    <field name="sale_order_line_id" invisible="1"/>
+                    <field name="product_id"/>
+                    <field name="origin_price_unit"  optional="hide"/>
+                    <field name="need_approve_price_unit"  optional="hide"
+                           attrs="{'invisible':[('user_limit_method','=','percent')], 'readonly': 1}"/>
+                    <field name="cost_price" readonly="1" attrs="{'invisible':[('user_limit_type','=','product_limit')]}"  optional="show"/>
+                    <field name="profit_percent" readonly="1" attrs="{'invisible':[('user_limit_type','=','product_limit')]}"  optional="show"/>
+                    <field name="need_approve_percent"  optional="hide"
+                           attrs="{'invisible':[('user_limit_method','=','amount')], 'readonly':True}"/>
+                    <field name="pricelist_id"  optional="hide"/>
+                    <field name="create_by"  optional="show"/>
+                    <field name="price_method" required="1"
+                           attrs="{'readonly':[('state','not in',['new','nedd_approve'])]}"/>
+                    <field name="new_percent"
+                           attrs="{'readonly':['|',('user_limit_method','=', 'amount'),('state','not in',['new']),'|',('user_limit_type','=','product_id')]}"/>
+                    <field name="new_amount"
+                           attrs="{'readonly':['|',('user_limit_method','=', 'percent'),('state','not in',['new'])]}"/>
+                    <field name="final_amount" readonly="1" force_save="1"/>
+                    <field name="state"/>
+                    <field name="write_uid" string="Action By"  optional="show"/>
+                    <button icon="fa-check-circle" name="order_line_approve" type="object"
+                            class="oe_highlight btn-success" context="{'action':'approve'}"
+                            attrs="{'invisible':['|',('state','not in',['new']),('user_limit_type','=','product_limit')]}"/>
+                    <button icon="fa-times-circle" name="order_line_approve" type="object"
+                            class="oe_highlight btn-danger" context="{'action':'reject'}"
+                            attrs="{'invisible':['|',('state','not in',['new']),('user_limit_type','=','product_limit')]}"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

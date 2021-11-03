@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_print_sale_order_report" model="res.groups">
+        <field name="name">Print Sale Order Report</field>
+    </record>
+
+    <record id="group_print_purchase_report" model="res.groups">
+        <field name="name">Print Purchase Report</field>
+    </record>
+
+    <record id="group_print_report_for_quotation" model="res.groups">
+        <field name="name">Print Report For Quotation</field>
+    </record>
+
+    <record id="group_print_purchase_reports_copy" model="res.groups">
+        <field name="name">Print Purchase Reports Copy</field>
+    </record>
+
+    <record id="group_print_sale_reports_copy" model="res.groups">
+        <field name="name">Print Sale Reports Copy</field>
+    </record>
+
+</odoo>

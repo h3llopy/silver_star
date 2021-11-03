@@ -1,0 +1,41 @@
+<odoo>
+
+    <record id="one_silver_customer_limit.view_sale_order_form_inherit" model="ir.ui.view">
+        <field name="name">one.customer.limit.sale.order.form.view.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="after">
+
+                <div class="alert alert-danger text-center o_form_header" role="status"
+                     attrs="{'invisible': ['|',('credit_alert', '=', False),('credit_check', '=', False)]}">
+                    <div>
+                        <strong>Customer Due Amount is
+                            <field name="amount_due"/>
+                            from
+                            <field name="credit_blocking"/>
+                        </strong>
+                    </div>
+                </div>
+                <div class="alert alert-danger text-center o_form_header" role="status"
+                     attrs="{'invisible': ['|',('days_alert', '=', False),('days_check', '=', False)]}">
+                    <div>
+                        <strong>Customer Due Day's is
+                            <field name="alert_days"/>
+                            until
+                            <field name="days_blocking"/>
+                        </strong>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="company_currency_id" invisible="1"/>
+                <field name="credit_alert" invisible="1"/>
+                <field name="credit_check" invisible="1"/>
+                <field name="days_alert" invisible="1"/>
+                <field name="days_check" invisible="1"/>
+
+            </xpath>
+        </field>
+    </record>
+</odoo>

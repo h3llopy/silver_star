@@ -22,8 +22,6 @@
                         <field name="employee_ids">
                             <tree editable="bottom">
                                 <field name="user_id"/>
-                                <field name="increase_percent"/>
-                                <field name="increase_amount"/>
                                 <field name="decrease_percent"/>
                                 <field name="decrease_amount"/>
                                 <field name="active" widget="boolean_toggle"/>

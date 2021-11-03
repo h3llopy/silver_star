@@ -28,7 +28,7 @@
                                    readonly="1" force_save="1"/>
                             <field name="is_customer_allow_free" invisible="1"/>
                             <field name="based_sale_order" invisible="1"/>
-                            <field name="apply_free" force_save="1" attrs="{'invisible':[('is_customer_allow_free','=',False)],
+                            <field name="apply_free" force_save="1" attrs="{'invisible':['|',('based_sale_order', '=', True),'|',('is_free_order','=',True),('is_customer_allow_free','=',False)],
                                                              }"/>
                             <field name="free_method"
                                    attrs="{'invisible':['|',('is_customer_allow_free','=',False),('apply_free','=',False)],'required':[('apply_free','=',True)],

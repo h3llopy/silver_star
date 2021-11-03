@@ -24,7 +24,8 @@ class FreeType(models.Model):
                                  string='Sale Order Insert', default='embedded', required=True)
 
     customers_ids = fields.Many2many(comodel_name='one.free.type.customer', string='Customers', inverse_name='free_type_id', select=True)
-    customers_count = fields.Integer(compute='compute_count')
+    customers_count = fields.Integer(compute='compute_customer_count')
+    products_count = fields.Integer(compute='compute_product_count')
 
     def action_add_customers_wizard(self):
         customers_ids = self.env['one.free.type.customer'].search([('free_type_id', '=', self.id)]).customer_id.ids
@@ -43,14 +44,36 @@ class FreeType(models.Model):
             'name': 'Customers',
             'view_mode': 'tree',
             'res_model': 'one.free.type.customer',
-            'context': "{'create': False}",
+            'context': {'create': False, },
             'domain': [('free_type_id', '=', self.id)]
         }
 
-    def compute_count(self):
+    def compute_customer_count(self):
         for record in self:
             record.customers_count = self.env['one.free.type.customer'].search_count(
                 [('free_type_id', '=', self.id)])
+
+    def get_products(self):
+        view = self.env.ref('one_silver_free_products.product_product_tree_view')
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Products',
+            'view_mode': 'tree',
+            'res_model': 'product.product',
+            'view_id': view.id,
+            'context': {
+                'edit': False,
+                'create': False,
+                'delete': False,
+                'duplicate': False,
+            },
+            'domain': [('free_types_allowed', 'in', self.id)]
+        }
+
+    def compute_product_count(self):
+        for record in self:
+            record.products_count = self.env['product.product'].search_count([('free_types_allowed', 'in', record.id)])
 
     @api.model
     def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
@@ -98,7 +121,7 @@ class FreeType(models.Model):
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100):
         if 'customer_id' in self.env.context and self.env.context.get('customer_id'):
-            frees = [('id', 'in',[])]
+            frees = [('id', 'in', [])]
             if self.env.context.get('customer_id'):
                 frees_ids = []
                 if self.env.context.get('is_free_order') and not self.env.context.get('based_sale_order'):

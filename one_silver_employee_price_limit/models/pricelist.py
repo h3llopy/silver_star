@@ -24,8 +24,6 @@ class PriceListEmployee(models.Model):
                                  store=True)
     pricelist_id = fields.Many2one(comodel_name='product.pricelist', store=True)
 
-    increase_percent = fields.Float(string='Increase %')
-    increase_amount = fields.Float(string='Increase $')
     decrease_percent = fields.Float(string='Decrease %')
     decrease_amount = fields.Float(string='Decrease $')
     active = fields.Boolean(string='Active', default=True)

@@ -222,8 +222,8 @@ class OneSequence(models.Model):
     def create(self, vals_list):
         previous_seq = self.search(
             [('used_for', '=', vals_list['used_for']), ('use_level', '=', vals_list['use_level']), ('partner_id', '=', vals_list['partner_id']),
-             ('industry_id', '=', vals_list['industry_id']), ('category_id', '=', vals_list['category_id']),
-             ('company_id', '=', vals_list['company_id']), ('stock_picking_type_id', '=', vals_list['stock_picking_type_id']), ])
+             ('industry_id', '=', vals_list['industry_id']), ('category_id', '=', vals_list['category_id']),('stock_picking_code', '=', vals_list['stock_picking_code']),
+             ('company_id', '=', vals_list['company_id']),  ])
         if previous_seq:
             raise ValidationError('Sequence with selected criteria already exist')
         else:

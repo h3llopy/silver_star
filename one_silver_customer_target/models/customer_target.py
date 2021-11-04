@@ -108,15 +108,18 @@ class OneCustomerTargetLine(models.Model):
         if self.product_template_id:
             self.product_template_id = self.product_template_id.id
 
-    @api.constrains('product_id', 'product_uom')
-    @api.depends('product_id', 'product_uom')
-    @api.onchange('product_uom')
+    @api.depends('product_id', )
+    @api.onchange('product_id')
     def _onchange_product_uom(self):
-        rest = self.target_id.line_ids - self
+        rest = self.target_id.line_ids
+        used_uom = []
         for line in rest:
-            if self.product_id == line.product_id:
-                if self.product_uom == line.product_uom:
-                    raise ValidationError('no dublicat')
+            if line.product_uom:
+                used_uom.append(line.product_uom.id)
+        if used_uom:
+            return {'domain': {'product_uom': [('id', 'not in', used_uom), ('category_id', '=', self.product_uom_category_id.id)]}}
+        else:
+            return {'domain': {'product_uom': [('category_id', '=', self.product_uom_category_id.id)]}}
 
 
 class OneCustomerTargetResult(models.Model):

@@ -2,9 +2,8 @@ from odoo import models,_
 from odoo.exceptions import UserError
 from odoo.tools import float_is_zero, float_compare
 
-
-class StockPicking(models.Model):
-    _inherit = 'stock.picking'
+class Picking(models.Model):
+    _inherit = "stock.picking"
 
     def button_validate(self):
         # Clean-up the context key at validation to avoid forcing the creation of immediate
@@ -91,6 +90,9 @@ class StockPicking(models.Model):
                 move_type = 'return'
             move_obj = pickings_to_backorder
         target = self.env['one.customer.target'].apply_sale_target(move_type=move_type, stock_move=move_obj)
+        for move_line in move_obj.move_line_ids:
+            self.env['one.customer.inventory'].calculate_qty(move_type=move_type, move_qty=move_line.qty_done, customer_id=move_obj.partner_id, product_id=move_line.product_id, stock_move=move_obj, uom_id=move_line.product_uom_id)
+
         if self.user_has_groups('stock.group_reception_report') \
                 and self.user_has_groups('stock.group_auto_reception_report') \
                 and self.filtered(lambda p: p.picking_type_id.code != 'outgoing'):

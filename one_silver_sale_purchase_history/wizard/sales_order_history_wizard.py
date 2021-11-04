@@ -28,6 +28,7 @@ class SalesPriceHistory(models.TransientModel):
     history_qty = fields.Float(string='Quantity')
     history_price = fields.Char(string='Unit Price')
     history_uom = fields.Many2one(comodel_name='uom.uom', related='sale_order_line_id.product_uom')
+    history_uom_factor = fields.Float(string='Uom Factor', related='history_uom.factor')
     history_discount = fields.Float(string='Discount', related='sale_order_line_id.discount')
     history_cost = fields.Float(string='Cost', related='sale_order_line_id.purchase_price')
     history_total = fields.Float(string='Total')

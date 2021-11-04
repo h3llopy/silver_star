@@ -23,6 +23,10 @@
                                 icon="fa-bar">
                             <field string="Customers" name="customers_count" widget="statinfo"/>
                         </button>
+                        <button class="oe_stat_button" type="object" name="get_products"
+                                icon="fa-bar">
+                            <field string="Products" name="products_count" widget="statinfo"/>
+                        </button>
                     </div>
                     <group>
                         <group>

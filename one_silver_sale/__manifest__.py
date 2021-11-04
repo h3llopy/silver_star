@@ -1,13 +1,6 @@
-#
-#  @author : ibralsmn [bralsmn@gmail.com]
-#  @filename : nagm-fady-new / __manifest__.py
-#  @date : 9/23/21, 9:50 AM
-#  Copyright (c) 2021. All rights reserved.
-#
-
 # -*- coding: utf-8 -*-
 {
-    'name': "one_silver_confirm_actions",
+    'name': "one_silver_sale",
     'description': """ """,
     'summary': '',
     'author': "One Solution",
@@ -18,14 +11,14 @@
     'license': 'LGPL-3',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale'],
+    'depends': ['base','sale'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/server_actions.xml',
         'views/views.xml',
         'views/templates.xml',
+        'views/sale_order.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

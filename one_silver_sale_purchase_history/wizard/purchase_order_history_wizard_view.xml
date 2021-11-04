@@ -18,6 +18,7 @@
                                 <field name="purchase_order_line_id"  optional="hide"/>
                                 <field name="purchase_order_date"  optional="show"/>
                                 <field name="history_uom"  optional="hide"/>
+                                <field name="history_uom_factor"  optional="hide"/>
                                 <field name="history_qty"  optional="show"/>
                                 <field name="history_price"  optional="show"/>
                                 <field name="history_currency"  optional="show"/>

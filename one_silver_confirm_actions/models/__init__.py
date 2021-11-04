@@ -7,4 +7,4 @@
 #  Copyright (c) 2021. All rights reserved.
 #
 
-from . import models, sale_order
+from . import models

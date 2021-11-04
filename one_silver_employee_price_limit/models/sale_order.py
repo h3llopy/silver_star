@@ -124,9 +124,8 @@ class SaleOrderLineNeedApprove(models.Model):
                                          store=True, ondelete='set null')
     state = fields.Selection(selection=[('new', 'New'), ('approve', 'Approve'), ('reject', 'Reject')], readonly=True,
                              store=True, default='new')
-    price_method = fields.Selection([('increase', '[+]Increase'), ('decrease', '[-]Decrease')])
-    new_percent = fields.Integer(string='New %', default=0.0)
-    new_amount = fields.Integer(string='New $', default=0.0)
+    new_percent = fields.Integer(string='Decrease percent', default=0.0)
+    new_amount = fields.Integer(string='Decrease Amount', default=0.0)
     final_amount = fields.Integer(string='Unit Price', compute='_calculate_final_amount')
     product_id = fields.Many2one(string='Product', comodel_name='product.product', readonly=1)
     origin_price_unit = fields.Float(string='Origin Unit Price', related='sale_order_line_id.origin_price_unit')
@@ -164,26 +163,17 @@ class SaleOrderLineNeedApprove(models.Model):
         for line in self:
             line.user_limit_type = self.env.user.user_limit_type
 
-    @api.depends('user_limit_method', 'new_percent', 'new_amount', 'price_method')
+    @api.depends('user_limit_method', 'new_percent', 'new_amount')
     def _calculate_final_amount(self):
         # if self.env.user.user_limit_type == 'user_limit':
         for record in self:
             if record.sale_order_id.user_limit_method == 'amount':
-                if record.price_method == 'decrease':
-                    record.final_amount = record.origin_price_unit - record.new_amount
-                elif record.price_method == 'increase':
-                    record.final_amount = record.origin_price_unit + record.new_amount
-                else:
-                    record.final_amount = record.need_approve_price_unit
+                record.final_amount = record.origin_price_unit - record.new_amount
             elif record.sale_order_id.user_limit_method == 'percent':
                 if record.new_percent > 100:
                     raise ValidationError('Percentage must be 100% as maximum')
                 else:
-                    if record.price_method == 'decrease':
-                        record.final_amount = record.origin_price_unit - (
-                                (record.origin_price_unit * record.new_percent) / 100)
-                    else:
-                        record.final_amount = record.origin_price_unit + (
+                    record.final_amount = record.origin_price_unit - (
                                 (record.origin_price_unit * record.new_percent) / 100)
             else:
                 record.final_amount = record.need_approve_price_unit
@@ -197,13 +187,10 @@ class SaleOrderLineNeedApprove(models.Model):
                 user_id = record.sale_order_id.pricelist_id.employee_ids.search([('user_id', '=', self.env.uid)])
                 if self._context['action'] == 'approve':
                     if record.sale_order_id.user_limit_method == 'amount':
-                        max_price_unit = record.origin_price_unit + user_id.search(
-                            [('pricelist_id', '=', record.sale_order_id.pricelist_id.id),
-                             ('user_id', '=', self.env.uid)]).increase_amount
                         min_price_unit = record.origin_price_unit - user_id.search(
                             [('pricelist_id', '=', record.sale_order_id.pricelist_id.id),
                              ('user_id', '=', self.env.uid)]).decrease_amount
-                        if min_price_unit <= record.final_amount <= max_price_unit:
+                        if min_price_unit <= record.final_amount :
 
                             self.env['sale.order.line'].search([('order_id', '=', record.sale_order_id.id),
                                                                 ('id', '=', record.sale_order_line_id.id)]).write({
@@ -215,14 +202,12 @@ class SaleOrderLineNeedApprove(models.Model):
                             raise ValidationError('you exceed your limit')
 
                     if record.sale_order_id.user_limit_method == 'percent':
-
-                        max_price_unit = record.origin_price_unit
                         min_price_unit = record.origin_price_unit - (
                                 (record.origin_price_unit * user_id.search(
                                     [('pricelist_id', '=', record.sale_order_id.pricelist_id.id),
                                      ('user_id', '=', self.env.uid)]).decrease_percent) / 100)
                         if self._context['action'] == 'approve':
-                            if min_price_unit <= record.origin_price_unit <= max_price_unit:
+                            if min_price_unit <= record.origin_price_unit :
                                 self.env['sale.order.line'].search([('order_id', '=', record.sale_order_id.id),
                                                                     ('id', '=', record.sale_order_line_id.id)]).write({
                                     'approve_done': True,
@@ -289,23 +274,20 @@ class SaleOrderLine(models.Model):
                     user_id = record.order_id.pricelist_id.employee_ids.search(
                         [('pricelist_id', '=', record.order_id.pricelist_id.id), ('user_id', '=', self.env.uid)])
                     if record.order_id.user_limit_method == 'amount':
-                        max_price_unit = record.origin_price_unit + user_id.search(
-                            [('pricelist_id', '=', record.order_id.pricelist_id.id),
-                             ('user_id', '=', self.env.uid)]).increase_amount
+
                         min_price_unit = record.origin_price_unit - user_id.search(
                             [('pricelist_id', '=', record.order_id.pricelist_id.id),
                              ('user_id', '=', self.env.uid)]).decrease_amount
-                        if min_price_unit < record.price_unit < max_price_unit:
+                        if min_price_unit < record.price_unit :
                             record.need_approve = False
                         else:
                             record.need_approve = True
                     elif record.order_id.user_limit_method == 'percent':
-                        max_price_unit = record.origin_price_unit
                         min_price_unit = record.origin_price_unit - (
                                 (record.origin_price_unit * user_id.search(
                                     [('pricelist_id', '=', record.order_id.pricelist_id.id),
                                      ('user_id', '=', self.env.uid)]).decrease_percent) / 100)
-                        if min_price_unit <= (record.price_subtotal / record.product_uom_qty) <= max_price_unit:
+                        if min_price_unit <= (record.price_subtotal / record.product_uom_qty) :
                             record.need_approve = False
                         else:
                             record.need_approve = True

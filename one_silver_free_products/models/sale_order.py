@@ -18,7 +18,7 @@ class SaleOrder(models.Model):
     apply_free = fields.Boolean(string='Apply Free Products')
 
     free_types = fields.Many2many(comodel_name='one.free.type', string='Applied Free Types',
-                                  relation='sale_order_free_types_rel' )
+                                  relation='sale_order_free_types_rel')
     free_method = fields.Selection(selection=[('percent', 'Percentage'), ('amount', 'Amount')], default='percent')
     free_total = fields.Monetary(string='Free Total')
     sales_order_add_free_products = fields.One2many(comodel_name='one.sale.order.free.product', string='Products',
@@ -44,6 +44,88 @@ class SaleOrder(models.Model):
     reload_lines = fields.Boolean(store=False, )
     related_free_sales_order_total = fields.Float(string='Related Sale Order Free',
                                                   compute='_get_related_free_sale_order_total')
+    open_dialog=fields.Boolean(store=False)
+
+
+
+    def name_get(self):
+        if self.partner_id:
+            frees_ids = []
+            if self.is_free_order and not self.based_sale_order:
+                customer_frees = self.env['one.free.type.customer'].search(
+                    [('customer_id', '=', self.partner_id.id), ('free_type_id.type_type', '=', 'standalone'),
+                     ('free_type_id.not_percent', '=', True)]).free_type_id.ids
+                global_frees = self.env['one.free.type'].search(
+                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids), ('type_type', '=', 'standalone')]).ids
+                for x in customer_frees:
+                    frees_ids.append(x)
+                for y in global_frees:
+                    frees_ids.append(y)
+                frees = [('id', 'in', frees_ids)]
+            elif not self.is_free_order and not self.based_sale_order:
+                customer_frees = self.env['one.free.type.customer'].search(
+                    [('customer_id', '=', self.partner_id.id), ('free_type_id.type_type', '=', 'embedded')]).free_type_id.ids
+                global_frees = self.env['one.free.type'].search(
+                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids), ('type_type', '=', 'embedded')]).ids
+                for x in customer_frees:
+                    frees_ids.append(x)
+                for y in global_frees:
+                    frees_ids.append(y)
+                frees = [('id', 'in', frees_ids)]
+            elif not self.is_free_order and self.based_sale_order:
+                customer_frees = self.env['one.free.type.customer'].search(
+                    [('customer_id', '=', self.partner_id.id), ('free_type_id.type_type', '=', 'standalone'),
+                     ('free_type_id.not_percent', '=', False)]).free_type_id.ids
+                global_frees = self.env['one.free.type'].search(
+                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids), ('type_type', '=', 'standalone'),
+                     ('not_percent', '=', False)]).ids
+                for x in customer_frees:
+                    frees_ids.append(x)
+                for y in global_frees:
+                    frees_ids.append(y)
+                frees = [('id', 'in', frees_ids)]
+            return {'domain': {'free_types': frees}}
+
+    @api.depends('free_types')
+    @api.onchange('free_types')
+    def _domain_free_types(self):
+        if self.partner_id:
+            frees_ids = []
+            if self.is_free_order and not self.based_sale_order:
+                customer_frees = self.env['one.free.type.customer'].search(
+                    [('customer_id', '=', self.partner_id.id), ('free_type_id.type_type', '=', 'standalone'),
+                     ('free_type_id.not_percent', '=', True)]).free_type_id.ids
+                global_frees = self.env['one.free.type'].search(
+                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids), ('type_type', '=', 'standalone')]).ids
+                for x in customer_frees:
+                    frees_ids.append(x)
+                for y in global_frees:
+                    frees_ids.append(y)
+                frees = [('id', 'in', frees_ids)]
+            elif not self.is_free_order and not self.based_sale_order:
+                customer_frees = self.env['one.free.type.customer'].search(
+                    [('customer_id', '=', self.partner_id.id), ('free_type_id.type_type', '=', 'embedded')]).free_type_id.ids
+                global_frees = self.env['one.free.type'].search(
+                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids), ('type_type', '=', 'embedded')]).ids
+                for x in customer_frees:
+                    frees_ids.append(x)
+                for y in global_frees:
+                    frees_ids.append(y)
+                frees = [('id', 'in', frees_ids)]
+            elif not self.is_free_order and self.based_sale_order:
+                customer_frees = self.env['one.free.type.customer'].search(
+                    [('customer_id', '=', self.partner_id.id), ('free_type_id.type_type', '=', 'standalone'),
+                     ('free_type_id.not_percent', '=', False)]).free_type_id.ids
+                global_frees = self.env['one.free.type'].search(
+                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids), ('type_type', '=', 'standalone'),
+                     ('not_percent', '=', False)]).ids
+                for x in customer_frees:
+                    frees_ids.append(x)
+                for y in global_frees:
+                    frees_ids.append(y)
+                frees = [('id', 'in', frees_ids)]
+            return {'domain': {'free_types': frees}}
+        # return super(SaleOrder, self).name_get()
 
     @api.onchange('order_line', 'amount_total', 'free_method', 'free_types')
     @api.depends('order_line', 'amount_total', 'free_method', 'free_types')
@@ -93,7 +175,6 @@ class SaleOrder(models.Model):
         self.amount_free_used = total
         self.amount_free_remin = (self.free_total - self.amount_free_used - self.related_free_sales_order_total)
 
-
     def action_add_free_product_wizard(self):
         return {'type': 'ir.actions.act_window',
                 'name': _('Add Free Products'),
@@ -133,10 +214,20 @@ class SaleOrder(models.Model):
             record.related_free_sales_order_total = sum(
                 [(sol.free_total_inner_free_order) for sol in record.related_sale_orders])
 
+    @api.onchange('based_sale_order')
+    def _onchange_selfbased_sale_order(self):
+        if self.based_sale_order:
+            self.apply_free = True
+        else:
+            self.apply_free = False
+
     @api.onchange('is_free_order')
     def _onchange_is_free_order(self):
         lines_removed = []
-
+        if self.is_free_order:
+            self.apply_free = True
+        else:
+            self.apply_free = True
         if self.is_free_order and not self.based_sale_order:
             self.free_method = 'percent'
             self.free_types = [(6, 0, [])]
@@ -221,8 +312,8 @@ class SaleOrder(models.Model):
             'tag': 'reload',
         }
 
-    @api.depends('partner_id')
-    @api.onchange('partner_id')
+    @api.depends('partner_id', )
+    @api.onchange('partner_id', )
     def _onchage_partner_id(self):
         self.free_types = [(6, 0, [])]
         if self.partner_id:
@@ -232,7 +323,7 @@ class SaleOrder(models.Model):
                     [('customer_id', '=', self.partner_id.id), ('free_type_id.type_type', '=', 'standalone'),
                      ('free_type_id.not_percent', '=', True)]).free_type_id.ids
                 global_frees = self.env['one.free.type'].search(
-                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids)]).ids
+                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids), ('type_type', '=', 'standalone')]).ids
                 for x in customer_frees:
                     frees_ids.append(x)
                 for y in global_frees:
@@ -242,7 +333,7 @@ class SaleOrder(models.Model):
                 customer_frees = self.env['one.free.type.customer'].search(
                     [('customer_id', '=', self.partner_id.id), ('free_type_id.type_type', '=', 'embedded')]).free_type_id.ids
                 global_frees = self.env['one.free.type'].search(
-                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids)]).ids
+                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids), ('type_type', '=', 'embedded')]).ids
                 for x in customer_frees:
                     frees_ids.append(x)
                 for y in global_frees:
@@ -253,13 +344,14 @@ class SaleOrder(models.Model):
                     [('customer_id', '=', self.partner_id.id), ('free_type_id.type_type', '=', 'standalone'),
                      ('free_type_id.not_percent', '=', False)]).free_type_id.ids
                 global_frees = self.env['one.free.type'].search(
-                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids)]).ids
+                    [('id', 'not in', self.env['one.free.type.customer'].search([]).free_type_id.ids), ('type_type', '=', 'standalone'),
+                     ('not_percent', '=', False)]).ids
                 for x in customer_frees:
                     frees_ids.append(x)
                 for y in global_frees:
                     frees_ids.append(y)
                 frees = [('id', 'in', frees_ids)]
-            return {'domain':{'free_types':frees}}
+            return {'domain': {'free_types': frees}}
 
     @api.model
     def create(self, vals_list):

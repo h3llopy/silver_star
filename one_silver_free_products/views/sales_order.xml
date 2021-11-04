@@ -28,7 +28,7 @@
                                    readonly="1" force_save="1"/>
                             <field name="is_customer_allow_free" invisible="1"/>
                             <field name="based_sale_order" invisible="1"/>
-                            <field name="apply_free" force_save="1" attrs="{'invisible':[('is_customer_allow_free','=',False)],
+                            <field name="apply_free" force_save="1" attrs="{'invisible':['|',('based_sale_order', '=', True),'|',('is_free_order','=',True),('is_customer_allow_free','=',False)],
                                                              }"/>
                             <field name="free_method"
                                    attrs="{'invisible':['|',('is_customer_allow_free','=',False),('apply_free','=',False)],'required':[('apply_free','=',True)],
@@ -36,7 +36,7 @@
                         </group>
                         <group>
                             <field name="free_types" widget="many2many_tags" context="{'customer_id':partner_id,'is_free_order':is_free_order,'based_sale_order':based_sale_order}"
-                                   attrs="{'invisible':['|',('is_customer_allow_free','=',False),('apply_free','=',False)], 'readonly':[('state','not in',['draft', 'sent'])],'required':[('apply_free','=',True)]}"
+                                   attrs="{'invisible':['|',('is_customer_allow_free','=',False),'|',('apply_free','=',False),('is_free_order','=',False),'&amp;',('apply_free','=',False),('is_free_order','=',False)], 'readonly':[('state','not in',['draft', 'sent'])],'required':[('apply_free','=',True)]}"
                                    options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True,'always_reload': True,'clickable': '1'}"/>
                         </group>
                     </group>
@@ -127,12 +127,12 @@
                     </attribute>
 
                 </xpath>
-                <xpath expr="//field[@name='pricelist_id']" position="attributes">
-                    <attribute name="attrs">{'readonly':['|',('based_sale_order', '=', True),('state','not in',['draft',
-                        'sent'])],'force_save':'1'}
-                    </attribute>
+<!--                <xpath expr="//field[@name='pricelist_id']" position="attributes">-->
+<!--                    <attribute name="attrs">{'readonly':['|',('based_sale_order', '=', True),('state','not in',['draft',-->
+<!--                        'sent'])],'force_save':'1'}-->
+<!--                    </attribute>-->
 
-                </xpath>
+<!--                </xpath>-->
                 <xpath expr="//field[@name='order_line']/tree" position="attributes">
                     <attribute name="decoration-success">is_free==True</attribute>
 

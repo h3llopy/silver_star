@@ -7,12 +7,6 @@
 #   * @package : ${PACKAGE_NAME}
 #  **/
 
-#
-#
-
-#
-#
-
 from odoo import fields, models
 
 

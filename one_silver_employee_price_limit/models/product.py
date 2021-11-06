@@ -17,4 +17,4 @@ class ProductTemplate(models.Model):
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
-    min_list_price = fields.Float(string='Min Sales Price')
+    min_list_price = fields.Float(string='Min Sales Price', related='product_tmpl_id.min_list_price', store=True, readonly=False)

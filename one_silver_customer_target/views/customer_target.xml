@@ -43,12 +43,12 @@
                         </group>
                         <notebook>
                             <page name="customer_target_lines" string="Lines">
-                                <field name="line_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                                <field name="line_ids" attrs="{'readonly':[('state','in',('inprogress', 'expire'))]}">
                                     <tree editable="top">
-                                        <field name="product_id" options="{'no_create': True, 'no_create_edit':True}" optional="hide" attrs="{'readonly':['|',('target_id_state','!=','draft'),'&amp;',('target_id_state','=','draft'),('target_id_id','!=', False)]}"/>
-                                        <field name="product_template_id" options="{'no_create': True, 'no_create_edit':True}"  attrs="{'readonly':['|',('target_id_state','!=','draft'),'&amp;',('target_id_state','=','draft'),('target_id_id','!=', False)]}"/>
-                                        <field name="product_uom" options="{'no_create': True, 'no_create_edit':True}" optional="show"  attrs="{'readonly':['|',('target_id_state','!=','draft'),'&amp;',('target_id_state','=','draft'),('target_id_id','!=', False)]}"    />
-                                        <field name="target_qty"/>
+                                        <field name="product_id" options="{'no_create': True, 'no_create_edit':True}" optional="hide" attrs="{'readonly':['|',('target_id_state','in',('inprogress', 'expire')),('customer_id','=', False)]}"/>
+                                        <field name="product_template_id" options="{'no_create': True, 'no_create_edit':True}"  attrs="{'readonly':['|',('target_id_state','in',('inprogress', 'expire')),('customer_id','=', False)]}"/>
+                                        <field name="product_uom" options="{'no_create': True, 'no_create_edit':True}" optional="show"  attrs="{'readonly':['|',('target_id_state','in',('inprogress', 'expire')),('customer_id','=', False)]}"    />
+                                        <field name="target_qty" attrs="{'readonly':['|',('target_id_state','in',('inprogress', 'expire')),('customer_id','=', False)]}"/>
                                         <field name="sold_qty"/>
                                         <field name="return_qty"/>
                                         <field name="target_id" invisible="1"/>

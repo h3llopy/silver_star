@@ -8,6 +8,7 @@
   ~ Copyright (c) 2021. All rights reserved.
   ~
   -->
+
 <odoo>
     <record id="model_sale_order_action_confirm_order" model="ir.actions.server">
         <field name="name">Confirm Order</field>

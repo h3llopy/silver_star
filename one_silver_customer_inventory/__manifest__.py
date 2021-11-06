@@ -11,7 +11,7 @@
     'license': 'LGPL-3',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','stock','uom','sale'],
+    'depends': ['base','stock','uom','sale','one_silver_customer_target'],
 
     # always loaded
     'data': [

@@ -3,8 +3,8 @@ from odoo.exceptions import UserError
 from odoo.tools import float_is_zero, float_compare
 
 
-class StockPicking(models.Model):
-    _inherit = 'stock.picking'
+class Picking(models.Model):
+    _inherit = "stock.picking"
 
     def button_validate(self):
         # Clean-up the context key at validation to avoid forcing the creation of immediate

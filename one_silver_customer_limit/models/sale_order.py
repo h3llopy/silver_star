@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api,_
-from odoo.exceptions import ValidationError, AccessDenied
+from odoo import models, fields, api, _
+from odoo.exceptions import AccessDenied
 
 
 class SaleOrder(models.Model):
@@ -59,16 +59,14 @@ class SaleOrder(models.Model):
                 if not (self.env.is_admin() or self.env.user.has_group('one_silver_customer_limit.allow_pass_customer_limit')):
                     raise AccessDenied('Customer credit limit exceeded.')
 
-
     def action_confirm(self):
-        if not (self.env.is_admin() or self.env.user.has_group('one_silver_customer_limit.allow_pass_customer_limit')):
-            raise AccessDenied(_('Customer credit limit exceeded.'))
-        else:
-            if self.credit_check:
-                existing_move = self.env['account.move'].search(
-                    [('partner_id', '=', self.partner_id.id), ('state', '=', 'posted')])
-
-                if (self.amount_total + self.amount_due)  >= self.credit_blocking :
+        if self.credit_check:
+            existing_move = self.env['account.move'].search(
+                [('partner_id', '=', self.partner_id.id), ('state', '=', 'posted')])
+            if (self.amount_total + self.amount_due) >= self.credit_blocking:
+                if not (self.env.is_admin() or self.env.user.has_group('one_silver_customer_limit.allow_pass_customer_limit')):
+                    raise AccessDenied(_('Customer credit limit exceeded.'))
+                else:
                     view_id = self.env.ref('one_silver_customer_limit.view_warning_wizard_form')
                     context = dict(self.env.context or {})
                     context['message'] = "Customer Blocking limit exceeded, Do You want to continue?"
@@ -83,10 +81,10 @@ class SaleOrder(models.Model):
                             'target': 'new',
                             'context': context,
                         }
-
                     else:
                         return super(SaleOrder, self).action_confirm()
+            else:
+                return super(SaleOrder, self).action_confirm()
 
-                else:
-                    return super(SaleOrder, self).action_confirm()
-
+        else:
+            return super(SaleOrder, self).action_confirm()

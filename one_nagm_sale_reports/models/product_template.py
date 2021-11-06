@@ -1,6 +1,6 @@
 """ Initialize Product Template """
 
-from odoo import models
+from odoo import models, fields
 
 
 class ProductTemplate(models.Model):
@@ -9,6 +9,15 @@ class ProductTemplate(models.Model):
          - 
     """
     _inherit = 'product.template'
+
+    seller_id = fields.Many2many(comodel_name='res.partner', string='Vendor',compute="_compute_saller_id")
+    tags_ids = fields.Many2many(comodel_name='res.partner.category', string='Tags'
+                                )
+
+    def _compute_saller_id(self):
+        for record in self:
+            record.seller_id = self.env['product.supplierinfo'].search([('product_tmpl_id', '=', record.id)], order='sequence asc').name.ids
+
 
     def get_vendor_product_code(self):
         """ Get Vendor Product Code """

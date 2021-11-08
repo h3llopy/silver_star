@@ -1,5 +1,6 @@
 """ Initialize Sale Order """
 
+from num2words import num2words
 from odoo import api, fields, models
 
 
@@ -33,26 +34,6 @@ class SaleOrder(models.Model):
         if amount != 0:
             lang = self.env.user.lang
             return num2words(amount, lang=lang)
-
-    def get_delivery_address(self, partner_shipping):
-        """ Get Delivery Address """
-        if partner_shipping:
-            record = self.env['res.partner'].search(
-                [('id', '=', partner_shipping)])
-            address = ""
-            if record.street:
-                address += record.street
-            if record.street2:
-                address += " " + record.street2
-            if record.city:
-                address += " " + record.city
-            if record.state_id:
-                address += " " + record.state_id.name
-            if record.zip:
-                address += " " + record.zip
-            if record.country_id:
-                address += " " + record.country_id.name
-            return address
 
     def print_report(self):
         """ Print Report """

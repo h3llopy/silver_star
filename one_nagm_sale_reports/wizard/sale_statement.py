@@ -6,7 +6,7 @@ from odoo import fields, models
 class SaleStatement(models.TransientModel):
     """
         Initialize  Sales Statement:
-         
+         -
     """
     _name = 'sale.statement'
     _description = 'Sales Statement'

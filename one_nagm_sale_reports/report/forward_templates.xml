@@ -3,18 +3,7 @@
     <template id="forward_template_id">
         <t t-call="web.external_layout">
             <div class="page">
-                <div class="row">
-                    <div>
-                        <strong class="text-left">
-                            <h3 t-esc="o.create_uid.name"/>
-                        </strong>
-                        <strong class="text-left">
-                            <h6 t-esc="time.strftime('%a %d %b %Y')"/>
-                        </strong>
-                        <strong class="text-left">
-                            <h6 t-esc="time.strftime('%I:%M %p')"/>
-                        </strong>
-                    </div>
+                <div>
                     <div style="margin-left:300px;">
                         <t>
                             <p>Credit</p>
@@ -33,9 +22,9 @@
                         </tr>
                         <tr>
                             <td/>
-                            <td class="text-center"><t t-esc="o.user_id.id"/></td>
+                            <td class="text-center"><t t-esc="o.user_id.name"/></td>
                             <td class="text-center">
-                                <t t-esc="o.get_delivery_address(o.partner_shipping_id.id)"/>
+                                <t t-esc="o.partner_shipping_id.name"/>
                             </td>
                         </tr>
                     </tbody>
@@ -113,18 +102,7 @@
     <template id="invoice_template_id">
         <t t-call="web.external_layout">
             <div class="page">
-                <div class="row">
-                    <div>
-                        <strong class="text-left">
-                            <h3 t-esc="o.sale_id.create_uid.name"/>
-                        </strong>
-                        <strong class="text-left">
-                            <h6 t-esc="time.strftime('%a %d %b %Y')"/>
-                        </strong>
-                        <strong class="text-left">
-                            <h6 t-esc="time.strftime('%I:%M %p')"/>
-                        </strong>
-                    </div>
+                <div>
                     <div style="margin-left:300px;">
                         <t>
                             <p>Credit</p>
@@ -145,7 +123,7 @@
                             <td/>
                             <td class="text-center"><t t-esc="o.sale_id.user_id.id"/></td>
                             <td class="text-center">
-                                <t t-esc="o.sale_id.get_delivery_address(o.sale_id.partner_shipping_id.id)"/>
+                                <t t-esc="o.sale_id.partner_shipping_id.name"/>
                             </td>
                         </tr>
                     </tbody>

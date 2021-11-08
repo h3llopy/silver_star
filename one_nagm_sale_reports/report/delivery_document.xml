@@ -137,13 +137,16 @@
                                             </td>
                                             <td class="text-center">
                                                 <span t-if="o.state == 'done'" t-esc="ml.qty_done*ml.product_id.standard_price"/>
-                                                <span t-if="o.state != 'done'" t-field="ml.product_uom_qty* ml.product_id.standard_price"/>
+                                                <span t-if="o.state != 'done'" t-esc="ml.product_uom_qty* ml.product_id.standard_price"/>
                                                 <t t-if="o.state == 'done'">
                                                     <t t-set="total_amount" t-value="total_amount+(ml.qty_done*ml.product_id.standard_price)"/>
                                                 </t>
                                                 <t t-if="o.state != 'done'">
                                                     <t t-set="total_amount" t-value="total_amount+(ml.product_uom_qty*ml.product_id.standard_price)"/>
                                                 </t>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="total_amount"/>
                                             </td>
                                         </tr>
                                         <t t-set="num" t-value="num+1"/>

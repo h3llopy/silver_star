@@ -3,42 +3,23 @@
     <template id="finance_sale_template_id">
         <t t-call="web.external_layout">
             <div class="page">
-                <div class="row">
-                    <div>
-                        <strong class="text-left">
-                            <h3 t-esc="o.create_uid.name"/>
-                        </strong>
-                        <strong class="text-left">
-                            <h6 t-esc="time.strftime('%a %d %b %Y')"/>
-                        </strong>
-                        <strong class="text-left">
-                            <h6 t-esc="time.strftime('%I:%M %p')"/>
-                        </strong>
-                    </div>
-
-                </div>
-                <div style="margin-left:600px;">
-                    <strong class="text-right">
-                        <h6 t-esc="o.partner_id.barcode"/>
-                    </strong>
-                    <strong class="text-right">
-                        <h6 t-esc="o.partner_id.name"/>
-                    </strong>
-                    <strong class="text-right">
-                        <h6 t-esc="o.get_delivery_address(o.partner_shipping_id.id)"/>
-                    </strong>
-                </div>
                 <table class="table table-borderless m-0" style=" border: none !important;">
                     <tbody>
                         <tr>
-                            <td class="text-left"><t t-esc="o.user_id.name"/></td>
-                            <td class="text-left"><t t-esc="o.purchase_order_id.name"/></td>
-                            <td class="text-left"><t t-esc="o.one_sequence"/></td>
+                            <td class="text-center"><t t-esc="o.partner_id.name"/></td>
+                            <td class="text-center"><t t-esc="o.one_sequence"/></td>
                         </tr>
                         <tr>
                             <td/>
-                            <td class="text-left"><t t-esc="o.purchase_order_id.date_order"/></td>
-                            <td class="text-left"><t t-esc="o.date_order"/></td>
+                            <td class="text-center">
+                                <t t-esc="o.partner_shipping_id.name"/>
+                            </td>
+                            <td class="text-center"><t t-esc="o.date_order"/></td>
+                        </tr>
+                        <tr>
+                            <td/>
+                            <td class="text-center"><t t-esc="o.user_id.name"/></td>
+                            <td class="text-center"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -46,7 +27,13 @@
                     <tbody>
                         <tr t-foreach="o.order_line" t-as="l">
                             <td class="text-right">
-                                <t t-esc="l.price_subtotal"/>
+                                <t t-esc="l.name"/>
+                            </td>
+                            <td class="text-right">
+                                <t t-esc="l.product_uom.name"/>
+                            </td>
+                            <td class="text-right">
+                                <t t-esc="l.product_id.uom_id.rounding"/>
                             </td>
                             <td class="text-right">
                                 <t t-esc="l.product_uom_qty"/>
@@ -55,57 +42,32 @@
                                 <t t-esc="l.price_unit"/>
                             </td>
                             <td class="text-right">
-                                <t t-esc="l.product_id.weight"/>
-                            </td>
-                            <td class="text-right">
-                                <t t-esc="l.product_id.uom_id.rounding"/>
-                            </td>
-                            <td class="text-right">
-                                <t t-esc="l.product_uom.name"/>
-                            </td>
-                            <td class="text-right">
-                                <t t-esc="l.name"/>
-                            </td>
-                            <td class="text-right">
-                                <t t-esc="l.product_id.name"/>
+                                <t t-esc="l.price_subtotal"/>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <table class="table table-condensed">
-                    <thead>
+                <table class="table table-sm" style="page-break-inside: avoid;">
+                    <tbody>
                         <tr>
-                            <th class="text-left">
+                            <td colspan="2" class="text-right">
+                                <t t-esc="sum(o.order_line.mapped(lambda r: r.product_uom_qty * r.price_unit))"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-right">
                                 <t t-esc="sum(o.order_line.mapped(lambda r: r.product_uom_qty * r.price_unit))-o.amount_untaxed"/>
-                            </th>
-                            <th style="width:5%;" class="text-left">Discount</th>
+                            </td>
                         </tr>
                         <tr>
-                            <th class="text-left">
-                                <t t-esc="o.amount_untaxed"/>
-                            </th>
-                            <th class="text-left">Value</th>
-                        </tr>
-                        <tr>
-                            <th class="text-left">
-                                <t t-esc="o.amount_tax"/>
-                            </th>
-                            <th class="text-left">Tax</th>
-
-                        </tr>
-                        <tr>
-                            <th class="text-left">
-                                <t t-esc="o.amount_total"/>
-                            </th>
-                            <th class="text-left">Total</th>
-                        </tr>
-                        <tr>
-                            <th colspan="2" class="text-center">
+                            <td class="text-right">
                                 <t t-esc="o._get_total_with_user_lang(o.amount_total)"/>
-                            </th>
-                            <th class="text-right">Total</th>
+                            </td>
+                            <td class="text-right">
+                                <t t-esc="o.amount_total"/>
+                            </td>
                         </tr>
-                    </thead>
+                    </tbody>
                 </table>
             </div>
         </t>
@@ -127,41 +89,23 @@
     <template id="finance_invoice_template_id">
         <t t-call="web.external_layout">
             <div class="page">
-                <div class="row">
-                    <div>
-                        <strong class="text-left">
-                            <h3 t-esc="o.sale_id.create_uid.name"/>
-                        </strong>
-                        <strong class="text-left">
-                            <h6 t-esc="time.strftime('%a %d %b %Y')"/>
-                        </strong>
-                        <strong class="text-left">
-                            <h6 t-esc="time.strftime('%I:%M %p')"/>
-                        </strong>
-                    </div>
-                </div>
-                <div style="margin-left:600px;">
-                    <strong class="text-right">
-                        <h6 t-esc="o.sale_id.partner_id.barcode"/>
-                    </strong>
-                    <strong class="text-right">
-                        <h6 t-esc="o.sale_id.partner_id.name"/>
-                    </strong>
-                    <strong class="text-right">
-                        <h6 t-esc="o.sale_id.get_delivery_address(o.sale_id.partner_shipping_id.id)"/>
-                    </strong>
-                </div>
                 <table class="table table-borderless m-0" style=" border: none !important;">
                     <tbody>
                         <tr>
-                            <td class="text-left"><t t-esc="o.sale_id.user_id.name"/></td>
-                            <td class="text-left"><t t-esc="o.sale_id.purchase_order_id.name"/></td>
-                            <td class="text-left"><t t-esc="o.sale_id.one_sequence"/></td>
+                            <td class="text-center"><t t-esc="o.sale_id.partner_id.name"/></td>
+                            <td class="text-center"><t t-esc="o.sale_id.one_sequence"/></td>
                         </tr>
                         <tr>
                             <td/>
-                            <td class="text-left"><t t-esc="o.sale_id.purchase_order_id.date_order"/></td>
-                            <td class="text-left"><t t-esc="o.sale_id.date_order"/></td>
+                            <td class="text-center">
+                                <t t-esc="o.sale_id.partner_shipping_id.name"/>
+                            </td>
+                            <td class="text-center"><t t-esc="o.sale_id.date_order"/></td>
+                        </tr>
+                        <tr>
+                            <td/>
+                            <td class="text-center"><t t-esc="o.sale_id.user_id.name"/></td>
+                            <td class="text-center"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -169,7 +113,13 @@
                     <tbody>
                         <tr t-foreach="o.sale_id.order_line" t-as="l">
                             <td class="text-right">
-                                <t t-esc="l.price_subtotal"/>
+                                <t t-esc="l.name"/>
+                            </td>
+                            <td class="text-right">
+                                <t t-esc="l.product_uom.name"/>
+                            </td>
+                            <td class="text-right">
+                                <t t-esc="l.product_id.uom_id.rounding"/>
                             </td>
                             <td class="text-right">
                                 <t t-esc="l.product_uom_qty"/>
@@ -178,57 +128,32 @@
                                 <t t-esc="l.price_unit"/>
                             </td>
                             <td class="text-right">
-                                <t t-esc="l.product_id.weight"/>
-                            </td>
-                            <td class="text-right">
-                                <t t-esc="l.product_id.uom_id.rounding"/>
-                            </td>
-                            <td class="text-right">
-                                <t t-esc="l.product_uom.name"/>
-                            </td>
-                            <td class="text-right">
-                                <t t-esc="l.name"/>
-                            </td>
-                            <td class="text-right">
-                                <t t-esc="l.product_id.name"/>
+                                <t t-esc="l.price_subtotal"/>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <table class="table table-condensed">
-                    <thead>
+                <table class="table table-sm" style="page-break-inside: avoid;">
+                    <tbody>
                         <tr>
-                            <th class="text-left">
+                            <td colspan="2" class="text-right">
+                                <t t-esc="sum(o.sale_id.order_line.mapped(lambda r: r.product_uom_qty * r.price_unit))"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-right">
                                 <t t-esc="sum(o.sale_id.order_line.mapped(lambda r: r.product_uom_qty * r.price_unit))-o.sale_id.amount_untaxed"/>
-                            </th>
-                            <th style="width:5%;" class="text-left">Discount</th>
+                            </td>
                         </tr>
                         <tr>
-                            <th class="text-left">
-                                <t t-esc="o.sale_id.amount_untaxed"/>
-                            </th>
-                            <th class="text-left">Value</th>
-                        </tr>
-                        <tr>
-                            <th class="text-left">
-                                <t t-esc="o.sale_id.amount_tax"/>
-                            </th>
-                            <th class="text-left">Tax</th>
-
-                        </tr>
-                        <tr>
-                            <th class="text-left">
+                            <td class="text-right">
+                                <t t-esc="o.sale_id._get_total_with_user_lang(o.sale_id.amount_total)"/>
+                            </td>
+                            <td class="text-right">
                                 <t t-esc="o.sale_id.amount_total"/>
-                            </th>
-                            <th class="text-left">Total</th>
+                            </td>
                         </tr>
-                        <tr>
-                            <th colspan="2" class="text-center">
-                                <t t-esc="o.sale_id._get_total_with_user_lang(o.amount_total)"/>
-                            </th>
-                            <th class="text-right">Total</th>
-                        </tr>
-                    </thead>
+                    </tbody>
                 </table>
             </div>
         </t>

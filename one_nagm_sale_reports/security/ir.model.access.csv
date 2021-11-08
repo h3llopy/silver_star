@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_sale_selection_report,Sale Selection Report,model_sale_selection_report,,1,1,1,1
+access_sale_select_report,Sale Select Report,model_sale_select_report,,1,1,1,1
+access_inv_select_report,Invoice Select Report,model_invoice_select_report,,1,1,1,1
+access_customer_statement,Sales Statement,model_sale_statement,,1,1,1,1

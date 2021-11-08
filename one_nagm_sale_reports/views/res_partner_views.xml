@@ -8,6 +8,13 @@
             <xpath expr="//field[@name='team_id']" position="after">
                 <field name="sale_report_id" options="{'no_open': True, 'no_create': True}"/>
             </xpath>
+            <xpath expr="//field[@name='vat']" position="after">
+                <label string="Partner Commission" for="partner_commission"/>
+                <div class="o_row">
+                    <field name="partner_commission"/>
+                    <span>%</span>
+                </div>
+            </xpath>
         </field>
     </record>
     <record id="inherit_res_partner_form2" model="ir.ui.view">

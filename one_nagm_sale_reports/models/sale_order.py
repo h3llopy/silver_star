@@ -1,8 +1,6 @@
 """ Initialize Sale Order """
 
-from num2words import num2words
-
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class SaleOrder(models.Model):
@@ -18,6 +16,17 @@ class SaleOrder(models.Model):
     report_template_id = fields.Many2one(
         related='partner_id.sale_report_id'
     )
+    partner_commission = fields.Float(related='partner_id.partner_commission')
+    partner_commission_value = fields.Float(
+        compute='_compute_partner_commission_value', store='1')
+
+    @api.depends('partner_commission', 'partner_commission')
+    def _compute_partner_commission_value(self):
+        """ Compute partner_commission_value value """
+        for rec in self:
+            if rec.amount_total:
+                rec.partner_commission_value = (
+                                                       rec.amount_total * rec.partner_commission) / 100
 
     def _get_total_with_user_lang(self, amount):
         """ Get Total With User Lang """

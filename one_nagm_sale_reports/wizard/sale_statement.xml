@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sales_statement_form" model="ir.ui.view">
+        <field name="name">sale.statement.form</field>
+        <field name="model">sale.statement</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="date_from"/>
+                    </group>
+                    <group>
+                        <field name="date_to"/>
+                    </group>
+                </group>
+                <group>
+                    <field name="select_report" widget="radio" options="{'horizontal': True}" string="Select Report To Print"/>
+                    <field name="partner_ids" options="{'no_open': True, 'no_create': True,'color_field': 'id'}" widget="many2many_tags" attrs="{'invisible':[('select_report','=','international_center')]}"/>
+                </group>
+                <footer>
+                    <button type="object" name="print_report" string="Print" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="sales_statement_action" model="ir.actions.act_window">
+        <field name="name">Sales Statement</field>
+        <field name="res_model">sale.statement</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="pdf_menu"
+              name="PDF"
+              parent="sale.menu_sale_report"
+              sequence="8"/>
+    <menuitem id="sales_statement_menu"
+              name="Sales Statement"
+              action="sales_statement_action"
+              parent="pdf_menu"
+              sequence="1"
+    />
+</odoo>

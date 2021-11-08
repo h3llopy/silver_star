@@ -18,7 +18,6 @@ class ProductTemplate(models.Model):
         for record in self:
             record.seller_id = self.env['product.supplierinfo'].search([('product_tmpl_id', '=', record.id)], order='sequence asc').name.ids
 
-
     def get_vendor_product_code(self):
         """ Get Vendor Product Code """
         seller_id = self.env['product.supplierinfo'].search(

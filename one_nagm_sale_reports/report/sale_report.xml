@@ -58,6 +58,7 @@
         <field name="print_report_name">('Finance House - %s' %(object.name))</field>
         <field name="binding_type">report</field>
     </record>
+<<<<<<< HEAD
     <record id="kuwait_finance_house_report" model="ir.actions.report">
         <field name="name">Kuwait Finance House</field>
         <field name="model">sale.statement</field>
@@ -77,5 +78,7 @@
         <field name="binding_type">report</field>
     </record>
 
+=======
+>>>>>>> d6565ce18166a8d4ad757b68d1e6f742629e9722
 
 </odoo>

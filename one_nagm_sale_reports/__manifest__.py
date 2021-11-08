@@ -14,7 +14,10 @@
         'views/sale_order_views.xml',
         'views/res_partner_views.xml',
         'views/account_move_views.xml',
+<<<<<<< HEAD
         'views/stock_picking.xml',
+=======
+>>>>>>> d6565ce18166a8d4ad757b68d1e6f742629e9722
         'report/forward_templates.xml',
         'report/sultan_center_templates.xml',
         'report/finance_house_templates.xml',
@@ -22,7 +25,10 @@
         'report/print_label_template.xml',
         'report/product_template.xml',
         'report/confirm_account_templates.xml',
+<<<<<<< HEAD
         'report/sale_statement_template.xml',
+=======
+>>>>>>> d6565ce18166a8d4ad757b68d1e6f742629e9722
         'report/delivery_document.xml',
         'report/partner_report.xml',
         'report/product_report.xml',

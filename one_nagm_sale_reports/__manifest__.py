@@ -19,7 +19,7 @@
         'report/sultan_center_templates.xml',
         'report/finance_house_templates.xml',
         'report/order_quotation_template.xml',
-        # 'report/print_label_template.xml',
+        'report/print_label_template.xml',
         'report/product_template.xml',
         'report/confirm_account_templates.xml',
         'report/sale_statement_template.xml',

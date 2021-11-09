@@ -8,7 +8,7 @@ class FinanceHouseReport(models.AbstractModel):
         Initialize Report One Silver Sale Report Finance House Template Id:
          -
     """
-    _name = 'report.one_center_reports.finance_house_template_id'
+    _name = 'report.one_nagm_sale_reports.finance_house_template_id'
     _description = 'Finance House Report'
 
     def get_report_data(self, order_id=False):
@@ -33,7 +33,7 @@ class FinanceHouseInvoiceReport(models.AbstractModel):
         Initialize Report One Silver Invoice  Finance House Template Id:
          -
     """
-    _name = 'report.one_center_reports.finance_inv_template_id'
+    _name = 'report.one_nagm_sale_reports.finance_inv_template_id'
     _description = 'Finance House Report'
 
     def get_report_data(self, inv_id=False):

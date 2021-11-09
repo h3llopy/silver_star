@@ -14,6 +14,7 @@
         'views/sale_order_views.xml',
         'views/res_partner_views.xml',
         'views/account_move_views.xml',
+        'views/product.xml',
         'views/stock_picking.xml',
         'report/forward_templates.xml',
         'report/sultan_center_templates.xml',

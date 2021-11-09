@@ -3,11 +3,16 @@
     <record id="inherit_sale_order_form" model="ir.ui.view">
         <field name="name">inherit.sale.order.form</field>
         <field name="model">sale.order</field>
-        <!--<field name="groups_id" eval="[(4, ref(''))]"/>-->
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='payment_term_id']" position="after">
                 <field name="purchase_order_id"/>
+                <label string="Partner Commission" for="partner_commission"/>
+                <div class="o_row">
+                    <field name="partner_commission"/>
+                    <span>%</span>
+                </div>
+                <field name="partner_commission_value"/>
                 <field name="report_template_id" invisible="1"/>
             </xpath>
             <xpath expr="//button[@name='action_cancel']" position="after">

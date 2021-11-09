@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="confirm_account_ar_template_id">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="direction:rtl;">
+                        <table class="table table-borderless m-0" style=" border: none !important;" width="100%">
+                            <tr>
+                                <td class="text-right" style="text-align:right;">
+                                    الكويت في : &#160;
+                                    <t t-esc="time.strftime('%%Y-%%m-%%d')"/>
+                                </td>
+                                <td class="text-left">
+                                    رقم المستند :
+                                </td>
+                            </tr>
+                            <tr><td colspan="2"/></tr>
+                            <tr><td colspan="2"/></tr>
+                            <tr>
+                                <td class="text-right" style="text-align:right;">
+                                    الساده /
+                                    &#160;&#160;<t class="text-right" t-esc="o.name"/>
+                                </td>
+                                <td class="text-right">
+                                    المحترمين
+                                </td>
+                            </tr>
+
+                        </table>
+                        <br/>
+                        <div class="text-right">
+                            تحية طيبة وبعد
+                        </div>
+                        <br/>
+                        <div class="text-center" style="text-decoration: underline; text-align:center; width:100%;">
+                            الموضوع / تاكيد رصيد حسابنا لديكم فى
+                            <t t-esc="time.strftime('%%Y-%%m-%%d')"/>
+                        </div>
+                        <br/>
+                        <div class="text-left" style="text-align:right;">
+                            بخصوص الموضوع أعلاه نفيدكم بانه فى ظل تدقيق حسابتنا للسنه الماليه فى
+                            <t t-esc="time.strftime('%Y')"/> &#160;&#160;
+                        </div>
+                        <br/>
+                        <div class="text-left" style="text-align:right;">
+                            يرجى منكم المصادقه على صحه رصيد حسابكم لدينا وهو مدين بمبلغ
+                            ( &#160;&#160;<t t-esc="o.total_invoiced"/> &#160;&#160;)
+                        </div>
+                        <br/>
+                        <div class="text-left" style="text-align:right;">
+                            &#160;&#160;&#160;&#160;تاكيد لرصيد حسابكم فى&#160;&#160;
+                            ......./....../......
+                        </div>
+                        <br/>
+                        <div class="text-left" style="text-align:right;">
+                            &#160;&#160;&#160;&#160; تاكيد مصادقه
+                            / ..............................................&#160;&#160;
+                        </div>
+                        <br/>
+                        <div class="text-left" style="text-align:right;">
+                            &#160;&#160;&#160;&#160;&#160;&#160;وهو كالتالى :
+                        </div>
+                        <br/>
+                        <t t-set="num" t-value="1"/>
+                        <table width="100%" class="table table-condensed">
+                            <thead>
+                                <tr align="center">
+                                    <th>#</th>
+                                    <th>الفرع </th>
+                                    <th>الرصيد بالدينار الكويتى</th>
+                                    <th>الملاحظات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.child_ids" t-as="c">
+                                    <tr align="center">
+                                        <td>
+                                            <t t-esc="num"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="c.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="c.total_invoiced"/>
+                                        </td>
+                                        <td/>
+                                    </tr>
+                                    <t t-set="num" t-value="num+1"/>
+                                </t>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <table class="table table-borderless m-0" style=" border: none !important;" width="100%">
+                            <tr>
+                                <td colspan="2" class="text-center">
+                                    <p align="center">
+                                        تعتبر المطابقه الحاليه صحيحه ومقبوله ما لم يتم اخطارنا باي اختلافات خلال اسبوع من تاريخ الاستلام
+                                        <br/>
+                                        ,,,,,,وتفضلوا بقبول فائق التحيه
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <template id="confirm_account_en_template_id">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div>
+                            <div class="text-left">
+                                File No:
+                            </div>
+                            <br/>
+                            <div class="text-left">
+                                <strong>To:</strong>
+                                <t t-esc="o.name"/>
+                            </div>
+                        </div>
+                        <table class="table table-borderless m-0" style=" border: none !important;" width="100%">
+                            <tr>
+                                <td>
+                                    <strong>Phone: &#160;</strong>
+                                    <t t-esc="o.phone"/>
+                                </td>
+                                <td class="text-right">
+                                    <strong>Fax: &#160;</strong>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <div>
+                            <div class="text-left">
+                                <strong>From:</strong>
+                                <t t-esc="o.company_id.name"/>
+                            </div>
+                            <div class="text-left">
+                                <strong>Dated:</strong>
+                                <t t-esc="time.strftime('%%Y-%%m-%%d')"/>
+                            </div>
+                        </div>
+                        <div class="text-center" style="text-decoration: underline; text-align:center; width:100%;">
+                            <strong>Subject: Balance Confirmation</strong>
+                        </div>
+                        <div class="text-left" style="text-align:left;">
+                            <strong>
+                                Dear M/s,<br/>
+                                We Wish to remind you that payment on your account with us is overdue.<br/>
+                                Accounting our records for the period from &#160;&#160;&#160;&#160;...../...../...... &#160;&#160; to &#160;&#160; ...../...../.....&#160;&#160; ,your<br/>
+                                account shows an outstanding debt for &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; as follow :
+                            </strong>
+                        </div>
+                        <br/>
+                        <t t-set="num" t-value="1"/>
+                        <table width="100%" class="table table-condensed">
+                            <thead>
+                                <tr align="center">
+                                    <th>#</th>
+                                    <th>Company </th>
+                                    <th>Silver Star Balance</th>
+                                    <th>Customer Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.child_ids" t-as="c">
+                                    <tr align="center">
+                                        <td>
+                                            <t t-esc="num"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="c.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="c.total_invoiced"/>
+                                        </td>
+                                        <td/>
+                                    </tr>
+                                    <t t-set="num" t-value="num+1"/>
+                                </t>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <table class="table table-borderless m-0" style=" border: none !important;" width="100%">
+                            <tr>
+                                <td colspan="2" class="text-center">
+                                    <pre align="center">
+                                        The statement of account is attached herewith showing the details of your
+                                        account. please accept this as a reminder would
+                                    </pre>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

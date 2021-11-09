@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="kuwait_finance_house_id">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page" style="direction:rtl;">
+                    <table class="table table-borderless m-0" style=" border: none !important;" width="100%">
+                        <tbody>
+                            <tr>
+                                <td class="text-right">
+                                    <strong> السادة / بيت التمويل الكويتى </strong>
+                                </td>
+                                <td class="text-right">
+                                    <strong>
+                                        المحترمين
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right">
+                                    <strong>
+                                        السيد/ مدير ادارة الائتمان
+                                    </strong>
+                                </td>
+                                <td class="text-right">
+                                    <strong>
+                                        المحترم
+                                    </strong>
+                                </td>
+                            </tr>
+                            <br/>
+                            <br/>
+                            <tr>
+                                <td colspan="2" class="text-center" align="center">
+                                    <strong>
+                                        &#160;يرجى العلم بان مبيعاتنا خلال الفترة من : &#160;<t t-esc="date_from +'  &#160;الى &#160; : &#160; '+date_to "/> &#160; كالتالى
+                                    </strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                    <t t-set="num" t-value="1"/>
+                    <table class="table table-sm" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <strong> الكود </strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong>العميل</strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong>المبيعات</strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong>المرتجعات</strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong>الصافى</strong>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="order_ids.mapped('partner_id')" t-as="l">
+                                <td class="text-center">
+                                    <span t-esc="num"/>
+                                    <t t-set="num" t-value="num+1"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="l.name"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="sum(order_ids.filtered(lambda r: r.partner_id.id == l.id) .mapped('total_amount'))"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="sum(order_ids.filtered(lambda r: r.partner_id.id == l.id) .mapped('total_returned_deliver'))"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="sum(order_ids.filtered(lambda r: r.partner_id.id == l.id) .mapped(lambda r: r.total_amount - r.total_returned_deliver))"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="text-center">
+                                    <strong> الاجمالى</strong>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="sum(order_ids.mapped('total_amount'))"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="sum(order_ids.mapped('total_returned_deliver'))"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="sum(order_ids.mapped(lambda r: r.total_amount - r.total_returned_deliver))"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="text-center">
+                                    <strong>قيمه الخصم</strong>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="sum(order_ids.mapped('discount_amount'))"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="text-center">
+                                    <strong>صافى المبيعات بعد الخصم</strong>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="sum(order_ids.mapped('price_total'))"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="kuwait_bank_template_id">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page" style="direction:rtl;">
+                    <table class="table table-borderless m-0" style=" border: none !important;" width="100%">
+                        <tbody>
+                            <tr>
+                                <td class="text-right">
+                                    <strong> السادة / بنك الكويت الدولى </strong>
+                                </td>
+                                <td class="text-right">
+                                    <strong>
+                                        المحترمين
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right">
+                                    <strong>
+                                        عناية السيد/ طارق شهاب
+                                    </strong>
+                                </td>
+                                <td class="text-right">
+                                    <strong>
+                                        المحترم
+                                    </strong>
+                                </td>
+                            </tr>
+                            <br/>
+                            <br/>
+                            <tr>
+                                <td colspan="2" class="text-center" align="center">
+                                    <strong>
+                                        &#160;يرجى العلم بان مبيعاتنا على مركز سلطان خلال المده من : &#160;<t t-esc="date_from +'  &#160;الى &#160; : &#160; '+date_to "/> &#160; كالتالى
+                                    </strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                    <t t-set="bank_commision" t-value="0"/>
+                    <table class="table table-sm" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <strong> تاريخ السند </strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong>رقم السند</strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong> قيمة المبيعات</strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong> قيمة المرتجعات</strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong> رقم طلب الشراء </strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong>العنوان</strong>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="order_ids.mapped('order_id')" t-as="l">
+                                <td class="text-center">
+                                    <span t-esc="l.date_order"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="l.name"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="sum(order_ids.filtered(lambda r: r.order_id.id == l.id) .mapped('total_amount'))"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="sum(order_ids.filtered(lambda r: r.order_id.id == l.id) .mapped('total_returned_deliver'))"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="l.purchase_order_id.name"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="l.partner_shipping_id.name"/>
+                                </td>
+                                <t t-set="bank_commision" t-value="bank_commision+l.partner_commission_value"/>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <table class="table table-sm" width="60%">
+                            <tr>
+                                <td class="text-center">
+                                    <strong> اجمالى المبيعات</strong>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="sum(order_ids.mapped('total_amount'))"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">
+                                    <strong> اجمالى المرتجعات</strong>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="sum(order_ids.mapped('total_returned_deliver'))"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">
+                                    <strong> صافى المبيعات</strong>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="sum(order_ids.mapped('price_total'))"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">
+                                    <strong> عمولة بنك الكويت الدولى</strong>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="bank_commision"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">
+                                    <strong> صافى المبيعات بعد العموله</strong>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="sum(order_ids.mapped('price_total'))-bank_commision"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="text-center">
+                            <strong> يرجى ايداع المبلغ فى حسابنا المفتوح لديكم رقم / 081010001717 باسم شركة النجم الفضى للتجارة العامه والمقاولات. </strong>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

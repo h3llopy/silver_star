@@ -1,191 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="sale_template_id">
-        <t t-call="web.html_container">
-            <t t-call="web.external_layout">
-                <div class="page">
-                    <div>
-                        <div style="margin-left:300px;">
-                            <t>
-                                <h3 t-esc="o.partner_id.name"/>
-                            </t>
+    <template id="sultan_sale_template_id">
+        <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+        <div class="row  mx-3">
+            <div class="col">
+                <div class="row">
+                    <div class="col-10">
+                        <div class="row  d-block  text-center">
+                            <span>
+                                Sultan Center
+                            </span>
+                            <span></span>
                         </div>
                     </div>
-                    <table class="table table-borderless m-0" style=" border: none !important;">
-                        <tbody>
-                            <tr>
-                                <td class="text-center"><t t-esc="o.partner_id.name"/></td>
-                                <td class="text-center"><t t-esc="o.one_sequence"/></td>
-                            </tr>
-                            <tr>
-                                <td/>
-                                <td class="text-center">
-                                    <t t-esc="o.partner_shipping_id.name"/>
-                                </td>
-                                <td class="text-center"><t t-esc="o.date_order"/></td>
-                            </tr>
-                            <tr>
-                                <td/>
-                                <td class="text-center"><t t-esc="o.user_id.name"/></td>
-                                <td class="text-center"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-condensed">
-                        <tbody>
-                            <tr t-foreach="o.order_line" t-as="l">
-                                <td class="text-right">
-                                    <t t-esc="l.name"/>
-                                </td>
-                                <td class="text-right">
-                                    <t t-esc="l.product_uom.name"/>
-                                </td>
-                                <td class="text-right">
-                                    <t t-esc="l.product_id.uom_id.rounding"/>
-                                </td>
-                                <td class="text-right">
-                                    <t t-esc="l.product_uom_qty"/>
-                                </td>
-                                <td class="text-right">
-                                    <t t-esc="l.price_unit"/>
-                                </td>
-                                <td class="text-right">
-                                    <t t-esc="l.price_subtotal"/>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm" style="page-break-inside: avoid;">
-                        <tbody>
-                            <tr>
-                                <td colspan="2" class="text-right">
-                                    <t t-esc="sum(o.order_line.mapped(lambda r: r.product_uom_qty * r.price_unit))"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="text-right">
-                                    <t t-esc="sum(o.order_line.mapped(lambda r: r.product_uom_qty * r.price_unit))-o.amount_untaxed"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-right">
-                                    <t t-esc="o._get_total_with_user_lang(o.amount_total)"/>
-                                </td>
-                                <td class="text-right">
-                                    <t t-esc="o.amount_total"/>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="col-1"></div>
                 </div>
-            </t>
-        </t>
-    </template>
-    <template id="sultan_sale_report_id">
-        <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="o">
-                <t t-call="one_nagm_sale_reports.sale_template_id" t-lang="o.partner_id.lang"/>
-            </t>
-        </t>
-    </template>
-    <template id="sultan_sale_template_id">
-        <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="o">
-                <t t-call="one_nagm_sale_reports.sale_template_id" t-lang="o.partner_id.lang"/>
-            </t>
-        </t>
-    </template>
-    <template id="invoice_template_id">
-        <t t-call="web.external_layout">
-            <div class="page">
-                <div>
-                    <div style="margin-left:300px;">
-                        <t>
-                            <h3 t-esc="o.sale_id.partner_id.name"/>
-                        </t>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="row  d-block text-left">
+                            <span t-esc="o.partner_id.name"/>
+                        </div>
+                        <div class="row  d-block text-left">
+                            <span t-esc="o.partner_shipping_id.name"/>
+                        </div>
+                        <div class="row  d-block text-left">
+                            <span t-esc="o.user_id.name"/>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="row  d-block text-right">
+                            <span t-field="o.one_sequence"/>
+                        </div>
+                        <div class="row  d-block text-right">
+                            <span t-esc="o.date_order"/>
+                        </div>
+                        <div class="col-4"></div>
                     </div>
                 </div>
-                <table class="table table-borderless m-0" style=" border: none !important;">
-                    <tbody>
+            </div>
+        </div>
+        <div class="page">
+            <div class="oe_structure"/>
+            <table class="table table-borderless table-sm o_main_table ">
+                <thead style="display: table-row-group">
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="o.order_line" t-as="l">
                         <tr>
-                            <td class="text-center"><t t-esc="o.sale_id.partner_id.name"/></td>
-                            <td class="text-center"><t t-esc="o.sale_id.one_sequence"/></td>
-                        </tr>
-                        <tr>
-                            <td/>
-                            <td class="text-center">
-                                <t t-esc="o.sale_id.partner_shipping_id.name"/>
+                            <td class="text-left">
+                                <t t-esc="l.product_id.name"/>
+                                <t t-if="l.discount != 0">
+                                    <t t-esc="l.discount"/>
+                                </t>
                             </td>
-                            <td class="text-center"><t t-esc="o.sale_id.date_order"/></td>
-                        </tr>
-                        <tr>
-                            <td/>
-                            <td class="text-center"><t t-esc="o.sale_id.user_id.name"/></td>
-                            <td class="text-center"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="table table-condensed">
-                    <tbody>
-                        <tr t-foreach="o.sale_id.order_line" t-as="l">
-                            <td class="text-right">
-                                <t t-esc="l.name"/>
-                            </td>
-                            <td class="text-right">
+                            <td class="text-left">
                                 <t t-esc="l.product_uom.name"/>
                             </td>
-                            <td class="text-right">
-                                <t t-esc="l.product_id.uom_id.rounding"/>
+                            <td class="text-left">
+                                <t t-esc="l.product_uom.factor_inv"/>
                             </td>
-                            <td class="text-right">
+                            <td class="text-left">
                                 <t t-esc="l.product_uom_qty"/>
                             </td>
-                            <td class="text-right">
+                            <td class="text-left">
                                 <t t-esc="l.price_unit"/>
                             </td>
-                            <td class="text-right">
+                            <td class="text-left">
                                 <t t-esc="l.price_subtotal"/>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
-                <table class="table table-sm" style="page-break-inside: avoid;">
-                    <tbody>
-                        <tr>
-                            <td colspan="2" class="text-right">
-                                <t t-esc="sum(o.sale_id.order_line.mapped(lambda r: r.product_uom_qty * r.price_unit))"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="text-right">
-                                <t t-esc="sum(o.sale_id.order_line.mapped(lambda r: r.product_uom_qty * r.price_unit))-o.sale_id.amount_untaxed"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-right">
-                                <t t-esc="o.sale_id._get_total_with_user_lang(o.sale_id.amount_total)"/>
-                            </td>
-                            <td class="text-right">
-                                <t t-esc="o.sale_id.amount_total"/>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </t>
+                    </t>
+                    <tr>
+                        <td colspan="5"></td>
+                        <td class="text-left">
+                            <t t-esc="o.amount_undiscounted"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5"></td>
+                        <td class="text-left">
+                            <t t-esc="o.amount_undiscounted - o.amount_total"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="text-left">
+                            <t t-esc="o._get_total_with_user_lang(o.amount_total)"/>
+                        </td>
+                        <td></td>
+                        <td class="text-left">
+                            <t t-esc="o.amount_total"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="clearfix"></div>
     </template>
-    <template id="sultan_invoice_report_id">
-        <t t-call="web.html_container">
+    <template id="sultan_sale_document">
+        <t t-call="web.basic_layout">
             <t t-foreach="docs" t-as="o">
-                <t t-call="one_nagm_sale_reports.invoice_template_id" t-lang="o.partner_id.lang"/>
+                <t t-call="one_nagm_sale_reports.sultan_sale_template_id" t-lang="o.partner_id.lang"/>
             </t>
         </t>
     </template>
-    <template id="sultan_invoice_template_id">
-        <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="o">
-                <t t-call="one_nagm_sale_reports.invoice_template_id" t-lang="o.partner_id.lang"/>
-            </t>
-        </t>
-    </template>
+    <record id="sultan_sale_action_report" model="ir.actions.report">
+        <field name="name">Sultan Center</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">one_nagm_sale_reports.sultan_sale_document</field>
+        <field name="report_file">one_nagm_sale_reports.sultan_sale_document</field>
+        <field name="print_report_name">('Sultan Center - %s' %(object.name))</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
 </odoo>

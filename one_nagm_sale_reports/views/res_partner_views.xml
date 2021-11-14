@@ -29,6 +29,13 @@
                     </group>
                 </group>
             </xpath>
+            <xpath expr="//page[@name='accounting_disabled']/div" position="before">
+                <group>
+                    <group>
+                        <field name="inv_report_id" options="{'no_open': True, 'no_create': True}"/>
+                    </group>
+                </group>
+            </xpath>
         </field>
     </record>
 </odoo>

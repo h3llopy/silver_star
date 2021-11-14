@@ -23,15 +23,17 @@ class AccountMove(models.Model):
     def _get_total_with_user_lang(self, amount):
         """ Get Total With User Lang """
         if amount != 0:
-            lang = self.env.user.lang
+            lang = self.partner_id.lang
             return num2words(amount, lang=lang)
 
     def print_report(self):
         """ Print Report """
-        if self.report_template_id:
-            data = {
-                'inv_id': self.id,
-            }
-            return (
-                self.report_template_id.report_action(self, data=data)
-            )
+        if self.sale_id:
+            if self.report_template_id:
+                return (
+                    self.report_template_id.report_action(self.sale_id)
+                )
+            else:
+                return (
+                    self.env.ref('sale.action_report_saleorder').report_action(self)
+                )

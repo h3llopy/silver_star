@@ -117,7 +117,6 @@
             </t>
         </t>
     </template>
-
     <template id="kuwait_bank_template_id">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
@@ -258,4 +257,22 @@
             </t>
         </t>
     </template>
+    <record id="kuwait_finance_house_report" model="ir.actions.report">
+        <field name="name">Kuwait Finance House</field>
+        <field name="model">sale.statement</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">one_nagm_sale_reports.kuwait_finance_house_id</field>
+        <field name="report_file">one_nagm_sale_reports.kuwait_finance_house_id</field>
+        <field name="print_report_name">('Kuwait Finance House')</field>
+        <field name="binding_type">report</field>
+    </record>
+    <record id="kuwait_bank_report" model="ir.actions.report">
+        <field name="name">Kuwait International Bank</field>
+        <field name="model">sale.statement</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">one_nagm_sale_reports.kuwait_bank_template_id</field>
+        <field name="report_file">one_nagm_sale_reports.kuwait_bank_template_id</field>
+        <field name="print_report_name">('Kuwait International Bank')</field>
+        <field name="binding_type">report</field>
+    </record>
 </odoo>

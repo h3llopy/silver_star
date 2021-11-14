@@ -12,12 +12,10 @@ class ResPartner(models.Model):
 
     sale_report_id = fields.Many2one(
         'ir.actions.report', string="Sale Report Template",
-        domain=[('model', '=', 'sale.select.report'),
-                ('binding_model_id', '=', False)]
+        domain=[('model', '=', 'sale.order')]
     )
     inv_report_id = fields.Many2one(
         'ir.actions.report', string="Inv Report Template",
-        domain=[('model', '=', 'invoice.select.report'),
-                ('binding_model_id', '=', False)]
+        domain=[('model', '=', 'sale.order')]
     )
     partner_commission = fields.Float()

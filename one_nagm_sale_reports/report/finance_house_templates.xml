@@ -163,8 +163,8 @@
             </table>
 
         </div>
-        <div class="clearfix"></div>
-        <div class="clearfix"></div>
+        <div class="clearfix"> </div>
+        <div class="clearfix"> </div>
         <div class="footer">
             <table class="table table-borderless table-sm o_main_table ">
                 <thead>

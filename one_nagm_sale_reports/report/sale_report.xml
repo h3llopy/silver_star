@@ -20,16 +20,16 @@
         <field name="binding_model_id" ref="sale.model_sale_order"/>
         <field name="binding_type">report</field>
     </record>
-    <record id="sale_finance_house_action_report" model="ir.actions.report">
-        <field name="name">Finance House</field>
-        <field name="model">sale.order</field>
-        <field name="report_type">qweb-pdf</field>
-        <field name="report_name">one_nagm_sale_reports.finance_house_id</field>
-        <field name="report_file">one_nagm_sale_reports.finance_house_id</field>
-        <field name="print_report_name">('Finance House - %s' %(object.name))</field>
-        <field name="binding_model_id" ref="sale.model_sale_order"/>
-        <field name="binding_type">report</field>
-    </record>
+<!--    <record id="sale_finance_house_action_report" model="ir.actions.report">-->
+<!--        <field name="name">Finance House</field>-->
+<!--        <field name="model">sale.order</field>-->
+<!--        <field name="report_type">qweb-pdf</field>-->
+<!--        <field name="report_name">one_nagm_sale_reports.finance_house_id</field>-->
+<!--        <field name="report_file">one_nagm_sale_reports.finance_house_id</field>-->
+<!--        <field name="print_report_name">('Finance House - %s' %(object.name))</field>-->
+<!--        <field name="binding_model_id" ref="sale.model_sale_order"/>-->
+<!--        <field name="binding_type">report</field>-->
+<!--    </record>-->
     <!--                             Select Report                                -->
     <record id="forward_sale_report" model="ir.actions.report">
         <field name="name">Forward Sale</field>
@@ -58,15 +58,15 @@
         <field name="print_report_name">('Finance House - %s' %(object.name))</field>
         <field name="binding_type">report</field>
     </record>
-    <record id="kuwait_finance_house_report" model="ir.actions.report">
-        <field name="name">Kuwait Finance House</field>
-        <field name="model">sale.statement</field>
-        <field name="report_type">qweb-html</field>
-        <field name="report_name">one_nagm_sale_reports.kuwait_finance_house_id</field>
-        <field name="report_file">one_nagm_sale_reports.kuwait_finance_house_id</field>
-        <field name="print_report_name">('Kuwait Finance House')</field>
-        <field name="binding_type">report</field>
-    </record>
+<!--    <record id="kuwait_finance_house_report" model="ir.actions.report">-->
+<!--        <field name="name">Kuwait Finance House</field>-->
+<!--        <field name="model">sale.statement</field>-->
+<!--        <field name="report_type">qweb-html</field>-->
+<!--        <field name="report_name">one_nagm_sale_reports.kuwait_finance_house_id</field>-->
+<!--        <field name="report_file">one_nagm_sale_reports.kuwait_finance_house_id</field>-->
+<!--        <field name="print_report_name">('Kuwait Finance House')</field>-->
+<!--        <field name="binding_type">report</field>-->
+<!--    </record>-->
     <record id="kuwait_bank_report" model="ir.actions.report">
         <field name="name">Kuwait International Bank</field>
         <field name="model">sale.statement</field>

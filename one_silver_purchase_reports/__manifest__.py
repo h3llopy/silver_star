@@ -18,6 +18,7 @@
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'reports/food_main.xml',
         'reports/purchase_voucher.xml',
         'reports/purchase_cusom_order.xml',
     ],

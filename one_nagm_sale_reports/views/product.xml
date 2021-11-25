@@ -9,6 +9,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='barcode']" position="after">
                     <field name="tags_ids"  widget="many2many_tags"/>
+                    <field name="weather_digit"  />
+                    <field name="country_id"  />
                 </xpath>
             </field>
         </record>
@@ -20,6 +22,8 @@
                 <xpath expr="//field[@name='type']" position="before">
                     <field name="seller_id" optional="show"  widget="many2many_tags"/>
                     <field name="tags_ids" optional="show"  widget="many2many_tags"/>
+                    <field name="weather_digit"  />
+                    <field name="country_id"  />
                 </xpath>
             </field>
         </record>

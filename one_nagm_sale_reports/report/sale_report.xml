@@ -53,8 +53,8 @@
         <field name="name">Finance House</field>
         <field name="model">sale.select.report</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">one_nagm_sale_reports.finance_house_template_id</field>
-        <field name="report_file">one_nagm_sale_reports.finance_house_template_id</field>
+        <field name="report_name">one_nagm_sale_reports.kuwait_finance_house_id</field>
+        <field name="report_file">one_nagm_sale_reports.kuwait_finance_house_id</field>
         <field name="print_report_name">('Finance House - %s' %(object.name))</field>
         <field name="binding_type">report</field>
     </record>

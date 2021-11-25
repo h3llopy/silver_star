@@ -12,7 +12,8 @@ class ProductProduct(models.Model):
 
     seller_id = fields.Many2many(comodel_name='res.partner', string='Vendor',compute="_compute_saller_id")
     tags_ids = fields.Many2many(comodel_name='res.partner.category', string='Tags')
-
+    country_id = fields.Many2one(comodel_name='res.country', string='country')
+    weather_digit = fields.Float(string='Weather')
     def _compute_saller_id(self):
         for record in self:
             record.seller_id = self.env['product.supplierinfo'].search([('product_id', '=', record.id)], order='sequence asc').name.ids
